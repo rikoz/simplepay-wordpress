@@ -1,0 +1,13 @@
+img.simplepay-woocommerce-checkout-logo {
+	height: 24px;
+}
+
+a.simplepay-woocommerce-checkout-learn-more {
+	font-size: .83em;
+	cursor: pointer;
+	float: right;
+}
+
+input#simplepay_transaction_id {
+	display: none;
+}

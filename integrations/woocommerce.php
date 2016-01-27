@@ -57,8 +57,8 @@ function init_simplepay_gateway_class() {
 				$this->description			= $this->get_option('description');
 				$this->email          		= $this->get_option('email');
 				
-				// Grab the API keys
-				$this->simplepay_api_keys();
+				// Get SimplePay admin settings
+				$this->simplepay_admin_settings();
 
 				// Hooks
 				wp_enqueue_script('simplepay', 'https://checkout.simplepay.ng/static/js/simplepay.js', array(), false, true);
@@ -73,7 +73,7 @@ function init_simplepay_gateway_class() {
 			/**
 			* SimplePay API Keys
 			*/
-			protected function simplepay_api_keys() {
+			protected function simplepay_admin_settings() {
 				
 				$admin_settings = SimplePay_DB::get_instance()->load_admin_data()[0];
 
@@ -85,6 +85,8 @@ function init_simplepay_gateway_class() {
 					$this->public_key = $admin_settings->simplepay_test_public_api_key;
 					$this->private_key = $admin_settings->simplepay_test_private_api_key;
 				}
+
+				$this->custom_image = $admin_settings->simplepay_custom_image_url;
 			}
 			
 			/**
@@ -93,7 +95,7 @@ function init_simplepay_gateway_class() {
 			public function get_icon() {
 				
 				$icon = $this->icon ? '
-				<img class="simplepay-woocommerce-checkout-logo" src="' . plugins_url('simplepay/assets/img/logos/logo.png') . '" alt="' . esc_attr($this->get_title()) . '" />
+				<img class="simplepay-woocommerce-checkout-logo" src="' . plugins_url('assets/img/logos/logo.png', SP_MAIN_FILE) . '" alt="' . esc_attr($this->get_title()) . '" />
 				<a href="https://www.simplepay.ng/" class="simplepay-woocommerce-checkout-learn-more" target="_blank">Learn about SimplePay</a>
 				' : '';
 
@@ -150,7 +152,8 @@ function init_simplepay_gateway_class() {
 					'cart' => $woocommerce,
 					'shipping' => WC_Shipping::instance()->load_shipping_methods(),
 					'order' => $order_data !== null ? $order_data['data']->id : null,
-					'title' => get_bloginfo('name')
+					'title' => get_bloginfo('name'),
+					'custom_image' => $this->custom_image
 				));
 			}
 

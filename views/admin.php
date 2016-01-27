@@ -39,6 +39,12 @@ $payment_types = array('ESCROW', 'Checkout');
 			
 			<h4 class="no-margin-bottom">PUBLIC API Key</h4>
 			<input type="text" name="test_public_api_key" value="<?php echo $form_data[0]->simplepay_test_public_api_key; ?>" />
+
+			<hr class="margin-top-sm" />
+			<h3>Custom SimplePay checkout image</h3>
+			<h4>Image url</h4>
+			<input type="text" name="custom_image_url" value="<?php echo $form_data[0]->simplepay_custom_image_url; ?>" />
+
 			<!--
 			<hr class="margin-top-sm" />
 			

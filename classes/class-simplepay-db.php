@@ -49,6 +49,7 @@ if (!class_exists('SimplePay_DB') ) {
 				simplepay_live_public_api_key VARCHAR(50),
 				simplepay_test_private_api_key VARCHAR(50),
 				simplepay_test_public_api_key VARCHAR(50),
+				simplepay_custom_image_url VARCHAR(100),
 				simplepay_live_mode BOOLEAN NOT NULL DEFAULT FALSE,
 				simplepay_payment_type VARCHAR(30),
 				UNIQUE KEY  id (id)
@@ -114,6 +115,7 @@ if (!class_exists('SimplePay_DB') ) {
 				simplepay_live_public_api_key = '" . $_POST['live_public_api_key'] . "',
 				simplepay_test_private_api_key = '" . $_POST['test_private_api_key'] . "',
 				simplepay_test_public_api_key = '" . $_POST['test_public_api_key'] . "',
+				simplepay_custom_image_url = '" . $_POST['custom_image_url'] . "',
 				simplepay_live_mode = '" . $cb_live_mode . "' 
 				WHERE id = '" . $base_simplepay_class->plugin_slug . "'");
 

@@ -42,7 +42,7 @@ $payment_types = array('ESCROW', 'Checkout');
 
 			<hr class="margin-top-sm" />
 			<h3>Custom SimplePay checkout image</h3>
-			<h4>Image url</h4>
+			<h4>Image URL</h4>
 			<input type="text" name="custom_image_url" value="<?php echo $form_data[0]->simplepay_custom_image_url; ?>" />
 
 			<!--

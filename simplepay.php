@@ -3,7 +3,7 @@
 Plugin Name: SimplePay
 Plugin URI: http://www.simplepay.ng
 Description: Online and Mobile Payment. Secure. Simple.
-Version: 1.0.0
+Version: 1.1.0
 Author: SimplePay (support@simplepay.ng)
 Author URI: http://www.simplepay.ng
 *
@@ -18,7 +18,8 @@ if (!defined('ABSPATH')) {
 // Plugin requirements.
 $simplepay_requires = array(
 	'wp'  => '4.0.0',
-	'php' => '5.3.0'
+	'php' => '5.3.0',
+	'curl' => '7.30.0'
 );
 
 // Define constants.
@@ -27,8 +28,8 @@ $simplepay_constants = array(
 	'SP_MAIN_FILE'  	      	=> __FILE__,
 	'SP_DIR_PATH'       	  	=> plugin_dir_path(__FILE__),
 	'SP_DIR_URL'	          	=> plugin_dir_url(__FILE__),
-	'SP_CHECKOUT_VERSION'		=> '1.0.0',
-	'SP_PAYMENT_SCRIPT_VERSION'	=> '1.0.0'
+	'SP_CHECKOUT_VERSION'		=> '1.0.1',
+	'SP_PAYMENT_SCRIPT_VERSION'	=> '1.0.1'
 );
 foreach($simplepay_constants as $constant => $value) {
 	if (!defined($constant)) {
@@ -43,7 +44,7 @@ $simplepay_requirements = new SimplePay_Requirements($simplepay_requires);
 if ($simplepay_requirements->pass() === false) {
 	$simplepay_fails = $simplepay_requirements->failures();
 
-	if (isset( $simplepay_fails['wp']) || isset($simplepay_fails['php'])) {
+	if (isset( $simplepay_fails['wp']) || isset($simplepay_fails['php']) || isset($simplepay_fails['curl'])) {
 		// Display an admin notice if running old WordPress or PHP
 		function simplepay_plugin_requirements() {
 			$required = unserialize(SP_REQUIRES);

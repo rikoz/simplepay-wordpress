@@ -27,11 +27,6 @@ function init_simplepay_gateway_class() {
 	if(class_exists('WC_Payment_Gateway')) {
 		class WC_Gateway_SimplePay_Gateway extends WC_Payment_Gateway {
 
-			// SimplePay API Keys
-			private $public_key = null;
-			
-			private $private_key = null;
-
 			/**
 			* Constructor
 			*/
@@ -61,7 +56,7 @@ function init_simplepay_gateway_class() {
 				$this->simplepay_admin_settings();
 
 				// Hooks
-				wp_enqueue_script('simplepay', 'https://checkout.simplepay.ng/static/js/simplepay.js', array(), false, true);
+				wp_enqueue_script('simplepay', 'https://checkout.simplepay.ng/simplepay.js', array(), false, true);
 				add_action('wp_enqueue_scripts', array($this, 'payment_scripts'));
 
 				add_action('woocommerce_after_order_notes', array($this, 'simplepay_transaction_id_field'));
@@ -201,20 +196,47 @@ function init_simplepay_gateway_class() {
 			* Submit payment
 			*/
 			public function process_payment($order_id) {
-
 				global $woocommerce;
-				$order = wc_get_order( $order_id );
-							
-				// Complete the payment and reduce stock levels
-				$order->payment_complete();
-
-				// Remove cart
-				$woocommerce->cart->empty_cart();
-
-				return array(
-					'result' => 'success',
-					'redirect' => $this->get_return_url($order)
+					
+				// Verify payment
+				$data = array (
+					"api_key" => $this->private_key,
+					"token" => $_POST['simplepay_transaction_id']
 				);
+				$data_string = json_encode($data); 
+
+				$ch = curl_init();
+
+				curl_setopt($ch, CURLOPT_URL, "https://checkout.simplepay.ng/v1/payments/verify/");
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+				curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+				curl_setopt($ch, CURLOPT_POST, true);
+				curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+				curl_setopt($ch, CURLOPT_HEADER, true);
+				curl_setopt($ch, CURLOPT_HTTPHEADER, array(                                                                          
+				    'Content-Type: application/json',                                                                                
+				    'Content-Length: ' . strlen($data_string)                                                                       
+				));       
+
+				curl_exec($ch);
+				$responseCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+				curl_close($ch);
+
+				if ($responseCode == '200') {
+					$order = wc_get_order( $order_id );
+								
+					// Complete the payment and reduce stock levels
+					$order->payment_complete();
+
+					// Remove cart
+					$woocommerce->cart->empty_cart();
+
+					return array(
+						'result' => 'success',
+						'redirect' => $this->get_return_url($order)
+					);
+				}
 			}
 		}
 	}

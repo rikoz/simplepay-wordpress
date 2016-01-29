@@ -34,12 +34,13 @@ class SimplePay_Requirements {
 	private $php = true;
 
 	/**
-	 * PHP Extensions.
+	 * cURL.
 	 *
 	 * @access private
 	 * @var bool
 	 */
-	private $ext = true;
+	private $curl = true;
+
 
 	/**
 	 * Results failures.
@@ -61,55 +62,46 @@ class SimplePay_Requirements {
 		if ($requirements && is_array( $requirements )) {
 
 			$errors       = array();
-			/*
 			$requirements = array_merge(
-				array('wp' => '', 'php' => '', 'extensions' => array()),
-				$requirements
-			);
-			*/
-			$requirements = array_merge(
-				array('wp' => '', 'php' => ''),
+				array('wp' => '', 'php' => '', 'curl' => ''),
 				$requirements
 			);
 
 			// Check for WordPress version.
-			if ($requirements['wp'] && is_string( $requirements['wp'])) {
+			if ($requirements['wp'] && is_string($requirements['wp'])) {
 				global $wp_version;
 				// If $wp_version isn't found or valid probably you are not running WordPress (properly)?
-				$wp_ver = $wp_version && is_string( $wp_version ) ? $wp_version : $requirements['wp'];
+				$wp_ver = $wp_version && is_string($wp_version) ? $wp_version : $requirements['wp'];
 				$wp_ver = version_compare($wp_ver, $requirements['wp']);
 				if ($wp_ver === -1) {
 					$errors['wp'] = $wp_version;
 					$this->wp = false;
 				}
 			}
-
-			// Check fo PHP version.
-			if ($requirements['php'] && is_string( $requirements['php'])) {
-				$php_ver = version_compare( PHP_VERSION, $requirements['php']);
+			
+			// Check for PHP version.
+			if ($requirements['php'] && is_string($requirements['php'])) {
+				$php_ver = version_compare(PHP_VERSION, $requirements['php']);
 				if ($php_ver === -1) {
 					$errors['php'] = PHP_VERSION;
 					$this->php = false;
 				}
 			}
-			/*
-			if ( $requirements['ext'] && is_array( $requirements['ext'] ) ) {
-				foreach ( $requirements['ext'] as $extension ) {
-					if ( is_string( $extension ) ) {
-						$extension = htmlspecialchars( trim( $extension ) );
-						$loaded    = extension_loaded( $extension );
-						$errors['ext'][ $extension ] = $loaded;
-						if ( false === $loaded ) {
-							$this->ext = false;
-						}
-					}
-				}
-			}
-			*/
-
+			
+			// Check for PHP curl extension.
+			if (!extension_loaded('curl')) {
+				$this->curl = false;
+    		} else {
+    			$curl_ver = version_compare(curl_version(), $requirements['curl']);
+				if ($curl_ver === -1) {
+					$errors['curl'] = curl_version();
+    				$this->curl = false;
+    			}
+    		}
+			
 			$this->failures = $errors;
 
-		} else {
+		} else { 
 			trigger_error('SimplePay Requirements: the requirements requested are invalid.', E_USER_ERROR );
 		}
 	}
@@ -129,8 +121,7 @@ class SimplePay_Requirements {
 	 * @return bool
 	 */
 	public function pass() {
-		// return in_array( false, array( $this->wp, $this->php, $this->ext ) ) ? false : true;
-		return in_array(false, array($this->wp, $this->php)) ? false : true;
+		return in_array(false, array($this->wp, $this->php, $this->curl)) ? false : true;
 	}
 
 }

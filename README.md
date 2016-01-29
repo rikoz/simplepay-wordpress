@@ -9,6 +9,7 @@ Super-fast account activation. Top-notch customer support. Support for all curre
 ## Requirements
 * PHP 5.3 or higher
 * Wordpress 4.x or higher
+* cURL 7.30.x or higher
 
 ## Installation
 1. Upload simplepay directory to the /wp-content/plugins/ directory

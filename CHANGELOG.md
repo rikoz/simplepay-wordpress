@@ -1,10 +1,16 @@
-## 1.0.0 (January 15, 2016)
+## 1.1.0 (January 29, 2016)
 
-- Initial release
-
+- Added verify payment
+- Added cURL to requirements
+- Updated README.md
+- Updated mobile checkout start dialog
 
 ## 1.0.1 (January 27, 2016)
 
-- Add custom SimplePay checkout image
-- Fix paths
+- Added custom SimplePay checkout image
+- Fixed paths
 - Hide "simplepay_transaction_id" from WooCommerce error message in checkout page
+
+## 1.0.0 (January 15, 2016)
+
+- Initial release

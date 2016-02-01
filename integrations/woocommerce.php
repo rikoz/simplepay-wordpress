@@ -35,7 +35,7 @@ function init_simplepay_gateway_class() {
 				$this->id					= 'simplepay';
 				$this->icon					= plugins_url('',__FILE__ ).'/../img/icon.png';
 				$this->logo					= plugins_url('',__FILE__ ).'/../img/logo.png';
-				$this->logo_small			= plugins_url('',__FILE__ ).'/../img/logo_small.png';
+				$this->logo_small			= plugins_url('',__FILE__ ).'/../img/logo.png';
 				$this->order_button_text  = __( 'Proceed with SimplePay', 'woocommerce');
 				$this->has_fields			= true;
 
@@ -90,7 +90,7 @@ function init_simplepay_gateway_class() {
 			public function get_icon() {
 				
 				$icon = $this->icon ? '
-				<img class="simplepay-woocommerce-checkout-logo" src="' . plugins_url('assets/img/logos/logo.png', SP_MAIN_FILE) . '" alt="' . esc_attr($this->get_title()) . '" />
+				<img class="simplepay-woocommerce-checkout-logo" src="' . plugins_url('integrations/woocommerce/assets/img/logo-checkout.png', SP_MAIN_FILE) . '" alt="' . esc_attr($this->get_title()) . '" />
 				<a href="https://www.simplepay.ng/" class="simplepay-woocommerce-checkout-learn-more" target="_blank">Learn about SimplePay</a>
 				' : '';
 

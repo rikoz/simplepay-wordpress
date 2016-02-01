@@ -91,14 +91,8 @@ class SimplePay_Requirements {
 			// Check for PHP curl extension.
 			if (!extension_loaded('curl')) {
 				$this->curl = false;
-    		} else {
-    			$curl_ver = version_compare(curl_version(), $requirements['curl']);
-				if ($curl_ver === -1) {
-					$errors['curl'] = curl_version();
-    				$this->curl = false;
-    			}
     		}
-			
+    		
 			$this->failures = $errors;
 
 		} else { 

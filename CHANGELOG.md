@@ -1,3 +1,11 @@
+## 1.1.2 (February 1, 2016)
+
+- Update WooCommerce checkout payment method image
+
+## 1.1.1 (January 29, 2016)
+
+- Fixed cURL verification
+
 ## 1.1.0 (January 29, 2016)
 
 - Added verify payment

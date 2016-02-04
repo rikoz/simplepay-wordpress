@@ -1,6 +1,10 @@
+## 1.1.3 (February 3, 2016)
+
+- Updated README
+
 ## 1.1.2 (February 1, 2016)
 
-- Update WooCommerce checkout payment method image
+- Checkout image update
 
 ## 1.1.1 (January 29, 2016)
 

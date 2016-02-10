@@ -72,15 +72,16 @@ function init_simplepay_gateway_class() {
 				
 				$admin_settings = SimplePay_DB::get_instance()->load_admin_data()[0];
 
-				if ($admin_settings->simplepay_live_mode == 1) {
-					$this->public_key = $admin_settings->simplepay_live_public_api_key;
-					$this->private_key = $admin_settings->simplepay_live_private_api_key;
+				if ($admin_settings->simplepay_test_mode == 1) {
+					$this->public_key = $admin_settings->simplepay_test_public_api_key;
+					$this->private_key = $admin_settings->simplepay_test_private_api_key;
 
 				} else {
 					$this->public_key = $admin_settings->simplepay_test_public_api_key;
 					$this->private_key = $admin_settings->simplepay_test_private_api_key;
 				}
 
+				$this->custom_description = $admin_settings->simplepay_description;
 				$this->custom_image = $admin_settings->simplepay_custom_image_url;
 			}
 			
@@ -148,6 +149,7 @@ function init_simplepay_gateway_class() {
 					'shipping' => WC_Shipping::instance()->load_shipping_methods(),
 					'order' => $order_data !== null ? $order_data['data']->id : null,
 					'title' => get_bloginfo('name'),
+					'description' => $this->custom_description,
 					'custom_image' => $this->custom_image
 				));
 			}
@@ -200,16 +202,16 @@ function init_simplepay_gateway_class() {
 					
 				// Verify payment
 				$data = array (
-					"api_key" => $this->private_key,
-					"token" => $_POST['simplepay_transaction_id']
+					'token' => $_POST['simplepay_transaction_id']
 				);
 				$data_string = json_encode($data); 
 
 				$ch = curl_init();
 
-				curl_setopt($ch, CURLOPT_URL, "https://checkout.simplepay.ng/v1/payments/verify/");
+				curl_setopt($ch, CURLOPT_URL, 'https://checkout.simplepay.ng/v1/payments/verify/');
+				curl_setopt($ch, CURLOPT_USERPWD, $this->private_key . ':');
 				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-				curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+				curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
 				curl_setopt($ch, CURLOPT_POST, true);
 				curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
 				curl_setopt($ch, CURLOPT_HEADER, true);
@@ -224,7 +226,7 @@ function init_simplepay_gateway_class() {
 				curl_close($ch);
 
 				if ($responseCode == '200') {
-					$order = wc_get_order( $order_id );
+					$order = wc_get_order($order_id);
 								
 					// Complete the payment and reduce stock levels
 					$order->payment_complete();

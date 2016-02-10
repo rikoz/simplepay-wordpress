@@ -117,5 +117,4 @@ class SimplePay_Requirements {
 	public function pass() {
 		return in_array(false, array($this->wp, $this->php, $this->curl)) ? false : true;
 	}
-
 }

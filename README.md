@@ -3,7 +3,7 @@ Contributors: simplepayng
 Tags: simplepay, payments, payment gateway, visa, mastercard, verve
 Requires at least: 3.6
 Tested up to: 4.4.2
-Stable tag: 1.1.3
+Stable tag: 1.1.4
 License: MIT
 
 SimplePay is the best Online Payment Gateway for the Nigerian market.
@@ -12,7 +12,7 @@ SimplePay is the best Online Payment Gateway for the Nigerian market.
 
 SimplePay offers the fastest and easiest way to send and receive money online. The innovative payment solution enables online businesses to integrate payments into their websites easily. Customize the check-out process the way you want.
 
-Super-fast account activation. Top-notch customer support. Support for all currencies and all major card brands like MasterCard and Visa. Soon support for Verve cards.
+Super-fast account activation. Top-notch customer support. Support for all currencies and all major card brands like MasterCard, Visa and Verve.
 
 == Requirements ==
 * PHP 5.2 or higher
@@ -26,6 +26,12 @@ Super-fast account activation. Top-notch customer support. Support for all curre
 4. Insert Api Keys in plugin settings
 
 == Changelog ==
+= 1.1.4 (February 10, 2016) =
+
+- Updated verify payment
+- Added custom SimplePay checkout description
+- Updated plugin settings page
+
 = 1.1.3 (February 3, 2016) =
 
 - Updated README
@@ -54,7 +60,6 @@ Super-fast account activation. Top-notch customer support. Support for all curre
 = 1.0.0 (January 15, 2016) =
 
 - Initial release
-
 
 == Plugin Features ==
 * Integration with WooCommerce

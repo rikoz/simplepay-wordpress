@@ -56,6 +56,10 @@ It supports the following attributes in the shortcode -
     (string) (optional) Label of the payment button
     Possible Values: 'Buy Now', 'Pay Now' etc
 
+    button_style:
+    (string) (optional) CSS class to be applyed to button
+    Default: 'simplepay-button-style'
+
 `[accept_simplepay_button_payment name="Cool Script" price="50" url="http://example.com/downloads/my-script.zip" button_text="Buy Now"]`
 
 

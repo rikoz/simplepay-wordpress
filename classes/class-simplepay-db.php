@@ -51,6 +51,8 @@ if (!class_exists('SimplePay_DB') ) {
 				simplepay_test_public_api_key VARCHAR(50),
 				simplepay_description VARCHAR(100),
 				simplepay_custom_image_url VARCHAR(100),
+				simplepay_button_checkout_url VARCHAR(100),
+				simplepay_button_default_text VARCHAR(100),
 				simplepay_test_mode BOOLEAN NOT NULL DEFAULT TRUE,
 				simplepay_payment_type VARCHAR(30),
 				UNIQUE KEY  id (id)
@@ -108,7 +110,7 @@ if (!class_exists('SimplePay_DB') ) {
 
 			$cb_test_mode = 0;
 			if(isset($_POST['test_mode']) && $_POST['test_mode'] == 1) {
-			    $cb_test_mode = 1;
+				$cb_test_mode = 1;
 			}    
 			
 			$wpdb->query("UPDATE " . SimplePay_DB::get_instance()->db . "
@@ -118,12 +120,22 @@ if (!class_exists('SimplePay_DB') ) {
 				simplepay_test_public_api_key = '" . $_POST['test_public_api_key'] . "',
 				simplepay_description = '" . $_POST['description'] . "',
 				simplepay_custom_image_url = '" . $_POST['custom_image_url'] . "',
+				simplepay_button_checkout_url = '" . $_POST['button_checkout_url'] . "',
+				simplepay_button_default_text = '" . $_POST['button_default_text'] . "',
 				simplepay_test_mode = '" . $cb_test_mode . "' 
 				WHERE id = '" . $base_simplepay_class->plugin_slug . "'");
 
 			wp_redirect(site_url('wp-admin/?page=simplepay-plugin'));
 		}
-		
+
+		public static function update_checkout_url($url) {
+			global $base_simplepay_class;
+			global $wpdb;
+
+			$wpdb->query("UPDATE " . SimplePay_DB::get_instance()->db . "
+				SET simplepay_button_checkout_url = '" .$url . "'
+				WHERE id = '" . $base_simplepay_class->plugin_slug . "'");
+		}
 
 		/**
 		 * Check if the database exists

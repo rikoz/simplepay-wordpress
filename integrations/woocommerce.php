@@ -77,8 +77,8 @@ function init_simplepay_gateway_class() {
 					$this->private_key = $admin_settings->simplepay_test_private_api_key;
 
 				} else {
-					$this->public_key = $admin_settings->simplepay_test_public_api_key;
-					$this->private_key = $admin_settings->simplepay_test_private_api_key;
+					$this->public_key = $admin_settings->simplepay_live_public_api_key;
+					$this->private_key = $admin_settings->simplepay_live_private_api_key;
 				}
 
 				$this->custom_description = $admin_settings->simplepay_description;
@@ -218,14 +218,18 @@ function init_simplepay_gateway_class() {
 				curl_setopt($ch, CURLOPT_HTTPHEADER, array(                                                                          
 				    'Content-Type: application/json',                                                                                
 				    'Content-Length: ' . strlen($data_string)                                                                       
-				));       
+				));
 
-				curl_exec($ch);
-				$responseCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+				$curl_response = curl_exec($ch);
+				$curl_response = preg_split("/\r\n\r\n/",$curl_response);
+				$response_content = $curl_response[1];
+				$json_response = json_decode(chop($response_content), true);
+
+				$response_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
 				curl_close($ch);
 
-				if ($responseCode == '200') {
+				if ($response_code == '200' && $json_response['response_code'] == '20000') {
 					$order = wc_get_order($order_id);
 								
 					// Complete the payment and reduce stock levels

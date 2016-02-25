@@ -88,10 +88,47 @@ if (!class_exists('SimplePay') ) {
 		 * @since    1.0.0
 		 */
 		public static function activate() {
-			
 			// Add value to indicate that we should show admin install notice.
 			// TODO:
 			update_option('sp_show_admin_install_notice', 1);
+
+			// Create checkout page  for Payment Buttons
+			$args = array(
+				'post_type' => 'page'
+			);
+			$pages = get_pages($args);
+			$checkout_page_id = '';
+			foreach ($pages as $page) {
+				if(strpos($page->post_content,'accept_simplepay_button_payment_checkout') !== false){
+					$checkout_page_id = $page->ID;
+				}
+			}
+
+			if ($checkout_page_id == '') {
+				$checkout_page_id = SimplePay::create_post('page', 'SimplePay Button Payment Checkout', 'AcceptSimplePayButtonPayments-checkout', '[accept_simplepay_button_payment_checkout]');
+				$checkout_page = get_post($checkout_page_id);
+				$checkout_page_url = $checkout_page->guid;
+
+				SimplePay_DB::get_instance()->update_checkout_url($checkout_page_url);
+			}
+		}
+
+		public static function create_post($postType, $title, $name, $content, $parentId = NULL){
+			$post = array(
+				'post_title' => $title,
+				'post_name' => $name,
+				'comment_status' => 'closed',
+				'ping_status' => 'closed',
+				'post_content' => $content,
+				'post_status' => 'publish',
+				'post_type' => $postType
+			);
+
+			if ($parentId !== NULL){
+					$post['post_parent'] = $parentId;
+			}
+			$postId = wp_insert_post($post);
+			return $postId;
 		}
 
 		/**
@@ -102,15 +139,19 @@ if (!class_exists('SimplePay') ) {
 		public function includes() {
 			include_once(SP_DIR_PATH . 'classes/class-simplepay-db.php');
 			include_once(SP_DIR_PATH . 'classes/class-simplepay-admin.php');
+			include_once(SP_DIR_PATH . 'classes/class-simplepay-button-order.php');
 		}
-		
+
 		/**
 		 * Get the instance for all the included classes
 		 */
 		public function init() {
-			
 			SimplePay_DB::get_instance();
 			SimplePay_Admin::get_instance();
+
+			// Register custom post type to store button orders
+			$SimplePay_ButtonOrder = SimplePay_ButtonOrder::get_instance();
+			add_action('init', array($SimplePay_ButtonOrder,'register_post_type') );
 		}
 
 		/**
@@ -123,7 +164,7 @@ if (!class_exists('SimplePay') ) {
 		public static function get_plugin_title() {
 			return __('SimplePay', 'sp');
 		}
-		
+
 		public static function get_plugin_menu_title() {
 			return __('SimplePay', 'sp');
 		}

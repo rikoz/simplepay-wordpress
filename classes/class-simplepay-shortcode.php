@@ -80,6 +80,7 @@ if (!class_exists('SimplePay_PaymentsShortcode') ) {
 				'url' => '',
 				'currency' => 'NGN',
 				'button_text' => $this->SimplePayAdminSettings->simplepay_button_default_text,
+				'button_style' => 'simplepay-button-style'
 							), $atts));
 
 			if (!empty($url)) {
@@ -104,7 +105,7 @@ if (!class_exists('SimplePay_PaymentsShortcode') ) {
 					  $description .= "{$name} - {$quantity} piece".($quantity <> 1 ? "s" : "")." for {$paymentAmount} {$currency}";
 
 				$output = "<form action='" .  $this->SimplePayAdminSettings->simplepay_button_checkout_url . "' METHOD='POST' id='".$form_id."'> ";
-				$output .= "<button type='button' id='".$form_id."_button'>{$button_text}</button>";
+				$output .= "<button type='button' id='".$form_id."_button' class='".$button_style."'>{$button_text}</button>";
 				$output .= "
 						<script>
 						jQuery( document ).ready(function(){

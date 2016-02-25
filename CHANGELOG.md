@@ -1,3 +1,14 @@
+## 1.2.0 (February 24, 2016)
+- Added payment buttons
+
+## 1.1.6 (February 22, 2016)
+
+- Updated verify
+
+## 1.1.5 (February 19, 2016)
+
+- Fix live mode
+
 ## 1.1.4 (February 10, 2016)
 
 - Updated verify payment

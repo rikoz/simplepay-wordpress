@@ -3,7 +3,7 @@
 Plugin Name: SimplePay
 Plugin URI: http://www.simplepay.ng
 Description: Online and Mobile Payment. Secure. Simple.
-Version: 1.1.4
+Version: 1.2.0
 Author: SimplePay (support@simplepay.ng)
 Author URI: http://www.simplepay.ng
 *
@@ -75,9 +75,13 @@ if ($simplepay_requirements->pass() === false) {
 
 // Load the plugin.
 require_once SP_DIR_PATH . 'classes/class-simplepay.php';
+// Load the short code class
+require_once SP_DIR_PATH . 'classes/class-simplepay-shortcode.php';
+
 
 // Register hooks that are fired when the plugin is activated, deactivated, and uninstalled, respectively.
 register_activation_hook(SP_MAIN_FILE, array('SimplePay', 'activate'));
+
 
 // Set up global holding the base class instance so we can easily use it throughout
 global $base_simplepay_class;
@@ -86,6 +90,9 @@ $base_simplepay_class = SimplePay::get_instance();
 
 // Hook: Submit admin form (need to be added here, not inside of any class)
 add_action('admin_post_simplepay_update', array('SimplePay_DB', 'update_admin_data'));
+
+// Hook: Load shortcode configuration
+add_action('plugins_loaded', array( 'SimplePay_PaymentsShortcode', 'get_instance' ) );
 
 
 /***

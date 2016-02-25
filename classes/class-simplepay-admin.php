@@ -37,7 +37,7 @@ if (!class_exists('SimplePay_Admin') ) {
 		public function add_plugin_admin_menu() {
 			
 			global $base_simplepay_class;
-			
+
 			add_menu_page(
 				$base_simplepay_class->get_plugin_title(),
 				$base_simplepay_class->get_plugin_menu_title(),
@@ -46,6 +46,25 @@ if (!class_exists('SimplePay_Admin') ) {
 				array($this, 'display_plugin_admin_page'),
 				SP_DIR_URL . 'assets/img/icon.png'
 			);
+
+			add_submenu_page(
+				$base_simplepay_class->plugin_slug,
+				'Settings',
+				'Settings',
+				'manage_options',
+				$base_simplepay_class->plugin_slug,
+				array($this, 'display_plugin_admin_page')
+			);
+
+			add_submenu_page(
+				$base_simplepay_class->plugin_slug,
+				'Pay Button Orders',
+				'Pay Button Orders',
+				'manage_options',
+				'edit.php?post_type=simplepay_btn_order',
+				NULL
+			);
+
 		}
 
 		/**

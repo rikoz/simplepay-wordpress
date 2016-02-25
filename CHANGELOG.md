@@ -1,3 +1,6 @@
+## 1.2.1 (February 25, 2016)
+- Added style configuration to button
+
 ## 1.2.0 (February 24, 2016)
 - Added payment buttons
 

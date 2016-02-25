@@ -3,10 +3,11 @@ Contributors: simplepayng
 Tags: simplepay, payments, payment gateway, visa, mastercard, verve
 Requires at least: 3.6
 Tested up to: 4.4.2
-Stable tag: 1.2.0
+Stable tag: 1.2.1
 License: MIT
 
 SimplePay is the best Online Payment Gateway for the Nigerian market.
+
 
 == Description ==
 
@@ -16,7 +17,7 @@ Super-fast account activation. Top-notch customer support. Support for all curre
 
 If you don't have a SimplePay account you can register for one at: https://www.simplepay.ng/registration/
 
-== Features ==
+= Features =
 
 * Quick installation and setup.
 * Easily take payment for a service from your site via SimplePay.
@@ -26,8 +27,7 @@ If you don't have a SimplePay account you can register for one at: https://www.s
 * View purchase orders form buy butons on your WordPress admin dashboard.
 * Allow users to automatically download the digital file after the purchase is complete.
 
-
-== Buy Button Shortcode Attributes ==
+= Buy Button Shortcode Attributes =
 
 In order to create a buy button insert the following shortcode into a post/page.
 
@@ -58,25 +58,36 @@ It supports the following attributes in the shortcode -
 
 `[accept_simplepay_button_payment name="Cool Script" price="50" url="http://example.com/downloads/my-script.zip" button_text="Buy Now"]`
 
+= Missing some feature? =
+Please send us an email to support@simplepay.ng
 
-== Requirements ==
+= Contribute =
+To contribute to this plugin feel free to fork it on GitHub - https://github.com/simplepayng/simplepay-wordpress
+
+== Installation ==
+
+= Requirements =
 * PHP 5.2 or higher
 * Wordpress 3.6 or higher
 * cURL 7.30.x or higher
 
-== Installation ==
+= Instalation steps =
 1. Upload simplepay directory to the /wp-content/plugins/ directory
 2. Activate the plugin through the 'Plugins' menu in WordPress
 3. Register a free account on https://www.simplepay.ng
 4. Insert Api Keys in plugin settings
 
+
 == Changelog ==
 
-== 1.2.0 (February 24, 2016) ==
+= 1.2.1 (February 25, 2016) =
+- Added style configuration to button
+
+= 1.2.0 (February 24, 2016) =
 
 - Added payment buttons
 
-== 1.1.6 (February 22, 2016) ==
+= 1.1.6 (February 22, 2016) =
 
 - Updated verify
 
@@ -119,11 +130,3 @@ It supports the following attributes in the shortcode -
 
 - Initial release
 
-== Plugin Features ==
-* Integration with WooCommerce
-
-== Missing some feature? ==
-Please send us an email to support@simplepay.ng
-
-== Contribute ==
-To contribute to this plugin feel free to fork it on GitHub - https://github.com/simplepayng/simplepay-wordpress

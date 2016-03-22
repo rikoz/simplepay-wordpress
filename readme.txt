@@ -62,6 +62,8 @@ It supports the following attributes in the shortcode -
 
 `[accept_simplepay_button_payment name="Cool Script" price="50" url="http://example.com/downloads/my-script.zip" button_text="Buy Now"]`
 
+Note that in most cases you should not touch the page "Button Checkout Page URL". This page is created automatically and is used to by wordpress internal system to finalize and record transactions.
+
 = Missing some feature? =
 Please send us an email to support@simplepay.ng
 

@@ -77,18 +77,27 @@ if (!class_exists('SimplePay_PaymentsShortcode') ) {
 				'name' => 'Item Name',
 				'price' => '0',
 				'quantity' => '1',
-				'url' => '',
+				'download_url' => '',
+				'redirect_url' => '',
 				'currency' => 'NGN',
 				'button_text' => $this->SimplePayAdminSettings->simplepay_button_default_text,
-				'button_style' => 'simplepay-button-style'
+				'button_style' => 'simplepay-button-style',
+				'fee_amount' => '',
+				'fee_label' => ''
 							), $atts));
 
-			if (!empty($url)) {
-				$url = base64_encode($url);
+			if (!empty($download_url)) {
+				$download_url = openssl_encrypt($download_url, 'AES-256-CBC', $this->SimplePayAdminSettings->simplepay_button_encrypt_key, 0, '1234567891234567');
 			}
 			else
-				$url = '';
-				
+				$download_url = '';
+
+			if (!empty($redirect_url)) {
+				$redirect_url = openssl_encrypt($redirect_url, 'AES-256-CBC', $this->SimplePayAdminSettings->simplepay_button_encrypt_key,0, '1234567891234567');
+			}
+			else
+				$redirect_url = '';
+
 			$quantity = strtoupper($quantity);
 			if ("$quantity" === "N/A") $quantity = "NA";
 
@@ -124,11 +133,13 @@ if (!class_exists('SimplePay_PaymentsShortcode') ) {
 								handler.open(SimplePay.CHECKOUT,
 								{
 								   description: '{$description}',
+								   amount: '{$priceInCents}',
+								   fee_amount: '{$fee_amount}',
+								   fee_label: '{$fee_label}',
 								   address: 'NA',
 								   postal_code: '',
 								   city: 'NA',
 								   country: 'NG',
-								   amount: '{$priceInCents}',
 								   currency: 'NGN'
 								});
 							});
@@ -140,7 +151,8 @@ if (!class_exists('SimplePay_PaymentsShortcode') ) {
 				$output .= "<input type='hidden' value='{$price}' name='item_price' />";
 				$output .= "<input type='hidden' value='{$quantity}' name='item_quantity' />";
 				$output .= "<input type='hidden' value='{$currency}' name='currency_code' />";
-				$output .= "<input type='hidden' value='{$url}' name='item_url' />";
+				$output .= "<input type='hidden' value='{$download_url}' name='download_url' />";
+				$output .= "<input type='hidden' value='{$redirect_url}' name='redirect_url' />";
 				$output .= "</form>";
 
 				return $output;
@@ -155,7 +167,7 @@ if (!class_exists('SimplePay_PaymentsShortcode') ) {
 			}
 
 			$GLOBALS['PaymentSuccessfull'] = false;
-			
+
 			$data = array (
 				'token' => $_POST['token']
 			);
@@ -190,7 +202,17 @@ if (!class_exists('SimplePay_PaymentsShortcode') ) {
 				do_action('SimplePayButtonPayments_payment_completed', $order, $json_response);
 
 				$GLOBALS['PaymentSuccessfull'] = true;
-				$item_url = base64_decode($_POST['item_url']);
+				if (!empty($_POST['download_url'])){
+					$download_url = openssl_decrypt($_POST['download_url'], 'AES-256-CBC', $this->SimplePayAdminSettings->simplepay_button_encrypt_key, 0, '1234567891234567');
+				} else {
+					$download_url = '';
+				}
+
+				if (!empty($_POST['redirect_url'])){
+					$redirect_url = openssl_decrypt($_POST['redirect_url'], 'AES-256-CBC', $this->SimplePayAdminSettings->simplepay_button_encrypt_key, 0, '1234567891234567');
+				} else {
+					$redirect_url = '';
+				}
 			}else{
 				$GLOBALS['asp_error'] = 'Error processing payment';
 			}

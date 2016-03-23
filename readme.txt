@@ -3,7 +3,7 @@ Contributors: simplepayng
 Tags: simplepay, payments, payment gateway, visa, mastercard, verve
 Requires at least: 3.6
 Tested up to: 4.4.2
-Stable tag: 1.2.1
+Stable tag: 1.3.0
 License: MIT
 
 SimplePay is the best Online Payment Gateway for the Nigerian market.
@@ -48,9 +48,13 @@ It supports the following attributes in the shortcode -
     Possible Values: '1', '5' etc.
     Default: 1
     
-    url:
+    download_url:
     (URL) (optional) URL of the downloadable file.
     Possible Values: http://example.com/my-downloads/product.zip
+
+    redirect_url:
+    (URL) (optional) URL of a page to redirect after payment successful.
+    Possible Values: http://example.com/my-page
 
     button_text:
     (string) (optional) Label of the payment button
@@ -86,7 +90,14 @@ To contribute to this plugin feel free to fork it on GitHub - https://github.com
 
 == Changelog ==
 
+= 1.3.0 (March 22, 2016) =
+
+- Added encryption key to button URLs
+- Added redirect url to button parameters
+- Fixed bug when reenabling the plugin with an already configured checkout page
+
 = 1.2.1 (February 25, 2016) =
+
 - Added style configuration to button
 
 = 1.2.0 (February 24, 2016) =

@@ -1,7 +1,15 @@
+## 1.3.0 (March 22, 2016)
+
+- Added encryption key to button URLs
+- Added redirect url to button parameters
+- Fixed bug when reenabling the plugin with an already configured checkout page
+
 ## 1.2.1 (February 25, 2016)
+
 - Added style configuration to button
 
 ## 1.2.0 (February 24, 2016)
+
 - Added payment buttons
 
 ## 1.1.6 (February 22, 2016)

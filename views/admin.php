@@ -60,6 +60,10 @@ $payment_types = array('ESCROW', 'Checkout');
 
 			<h4>Button Default Text</h4>
 			<input type="text" name="button_default_text" value="<?php echo $form_data[0]->simplepay_button_default_text; ?>" />
+
+			<h4>Button URL Encrypt Key</h4>
+			<input type="text" name="button_encrypt_key" value="<?php echo $form_data[0]->simplepay_button_encrypt_key; ?>" />
+			<div style="font-size:11px;">This key is automatically created for you when you install the plugin.</div>
 		</div>
 		<div class="margin-top-md">
 			<input type="submit" name="submit" value="Save Changes" />

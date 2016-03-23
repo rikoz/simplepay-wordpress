@@ -98,6 +98,7 @@ if (!class_exists('SimplePay') ) {
 			);
 			$pages = get_pages($args);
 			$checkout_page_id = '';
+			$checkout_page_url = '';
 			foreach ($pages as $page) {
 				if(strpos($page->post_content,'accept_simplepay_button_payment_checkout') !== false){
 					$checkout_page_id = $page->ID;
@@ -108,9 +109,16 @@ if (!class_exists('SimplePay') ) {
 				$checkout_page_id = SimplePay::create_post('page', 'SimplePay Button Payment Checkout', 'AcceptSimplePayButtonPayments-checkout', '[accept_simplepay_button_payment_checkout]');
 				$checkout_page = get_post($checkout_page_id);
 				$checkout_page_url = $checkout_page->guid;
-
-				SimplePay_DB::get_instance()->update_checkout_url($checkout_page_url);
+			} else {
+				$checkout_page = get_post($checkout_page_id);
+				$checkout_page_url = $checkout_page->guid;
 			}
+
+			// store the checkout page url configuration
+			SimplePay_DB::get_instance()->update_checkout_url($checkout_page_url);
+
+			// generate a secret key to protect the redirect and download urls
+			SimplePay_DB::get_instance()->generate_button_url_encrypt_key();
 		}
 
 		public static function create_post($postType, $title, $name, $content, $parentId = NULL){

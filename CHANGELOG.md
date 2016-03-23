@@ -1,3 +1,7 @@
+## 1.3.1 (March 23, 2016)
+
+- Added missing support for lower denomination in fees
+
 ## 1.3.0 (March 22, 2016)
 
 - Added encryption key to button URLs

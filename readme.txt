@@ -3,7 +3,7 @@ Contributors: simplepayng
 Tags: simplepay, payments, payment gateway, visa, mastercard, verve
 Requires at least: 3.6
 Tested up to: 4.4.2
-Stable tag: 1.3.0
+Stable tag: 1.3.1
 License: MIT
 
 SimplePay is the best Online Payment Gateway for the Nigerian market.
@@ -89,6 +89,10 @@ To contribute to this plugin feel free to fork it on GitHub - https://github.com
 
 
 == Changelog ==
+
+= 1.3.1 (March 23, 2016) =
+
+- Added missing support for lower denomination in fees
 
 = 1.3.0 (March 22, 2016) =
 

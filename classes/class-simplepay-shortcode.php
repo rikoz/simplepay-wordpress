@@ -106,6 +106,11 @@ if (!class_exists('SimplePay_PaymentsShortcode') ) {
 				$paymentAmount = ("$quantity" === "NA" ? $price : ($price * $quantity));
 				$priceInCents = $paymentAmount * 100 ;
 				
+				$feeInCents = '';
+				if (!empty($fee_amount)){
+					$feeInCents = $fee_amount * 100;
+				}
+
 				$description = '';
 				
 				if ("$quantity"==="NA")
@@ -134,13 +139,13 @@ if (!class_exists('SimplePay_PaymentsShortcode') ) {
 								{
 								   description: '{$description}',
 								   amount: '{$priceInCents}',
-								   fee_amount: '{$fee_amount}',
+								   currency: 'NGN',
+								   fee_amount: '{$feeInCents}',
 								   fee_label: '{$fee_label}',
 								   address: 'NA',
 								   postal_code: '',
 								   city: 'NA',
-								   country: 'NG',
-								   currency: 'NGN'
+								   country: 'NG'
 								});
 							});
 						});

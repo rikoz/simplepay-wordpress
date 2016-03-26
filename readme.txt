@@ -3,7 +3,7 @@ Contributors: simplepayng
 Tags: simplepay, payments, payment gateway, visa, mastercard, verve
 Requires at least: 3.6
 Tested up to: 4.4.2
-Stable tag: 1.3.1
+Stable tag: 1.3.2
 License: MIT
 
 SimplePay is the best Online Payment Gateway for the Nigerian market.
@@ -11,7 +11,7 @@ SimplePay is the best Online Payment Gateway for the Nigerian market.
 
 == Description ==
 
-SimplePay offers the fastest and easiest way to send and receive money online. The innovative payment solution enables online businesses to integrate payments into their websites easily. Customize the check-out process the way you want.
+SimplePay offers the fastest and easiest way to send and receive money online. The innovative payment solution enables online businesses to integrate payments into their websites easily. Customise the check-out process the way you want.
 
 Super-fast account activation. Top-notch customer support. Support for all currencies and all major card brands like MasterCard, Visa and Verve.
 
@@ -21,11 +21,12 @@ If you don't have a SimplePay account you can register for one at: https://www.s
 
 * Quick installation and setup.
 * Easily take payment for a service from your site via SimplePay.
-* Complete support for woocommerce e-commerce plugin 
+* Complete support for woocommerce e-commerce plugin
 * Create buy buttons for your products or services on the fly and embed it anywhere on your site using a user-friendly shortcode.
 * Accept donation on your WordPress site for a cause.
-* View purchase orders form buy butons on your WordPress admin dashboard.
+* View purchase orders form buy buttons on your WordPress admin dashboard.
 * Allow users to automatically download the digital file after the purchase is complete.
+* Protect content that is only visible if payment was successful.
 
 = Buy Button Shortcode Attributes =
 
@@ -33,7 +34,7 @@ In order to create a buy button insert the following shortcode into a post/page.
 
 `[accept_simplepay_button_payment]`
 
-It supports the following attributes in the shortcode -
+It supports the following attributes in the shortcode:
 
     name:
     (string) (required) Name of the product
@@ -66,7 +67,17 @@ It supports the following attributes in the shortcode -
 
 `[accept_simplepay_button_payment name="Cool Script" price="50" url="http://example.com/downloads/my-script.zip" button_text="Buy Now"]`
 
-Note that in most cases you should not touch the page "Button Checkout Page URL". This page is created automatically and is used to by wordpress internal system to finalize and record transactions.
+Note that in most cases you should not touch the page "Button Checkout Page URL". This page is created automatically and is used to by
+wordpress internal system to finalise and record transactions.
+
+There is however an advanced use where you can edit content of the page referred by "Button Checkout Page URL".
+If you want to protect content you can place it inside the accept_simplepay_button_payment_checkout shortcode like:
+
+    [accept_simplepay_button_payment_checkout]
+        Please fill the form:
+
+        [contact-form-7 id="113" title="Contact form 1"]
+    [/accept_simplepay_button_payment_checkout]
 
 = Missing some feature? =
 Please send us an email to support@simplepay.ng
@@ -90,6 +101,10 @@ To contribute to this plugin feel free to fork it on GitHub - https://github.com
 
 == Changelog ==
 
+= 1.3.2 (March 26, 2016) =
+
+- Allow shortcodes inside shortcode_accept_simplepay_button_payment_checkout
+
 = 1.3.1 (March 23, 2016) =
 
 - Added missing support for lower denomination in fees
@@ -98,7 +113,7 @@ To contribute to this plugin feel free to fork it on GitHub - https://github.com
 
 - Added encryption key to button URLs
 - Added redirect url to button parameters
-- Fixed bug when reenabling the plugin with an already configured checkout page
+- Fixed bug when enabling the plugin with an already configured checkout page
 
 = 1.2.1 (February 25, 2016) =
 

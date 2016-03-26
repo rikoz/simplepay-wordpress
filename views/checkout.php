@@ -2,7 +2,7 @@
 	global $PaymentSuccessfull, $asp_error;
 	if($PaymentSuccessfull) {
 		if(!empty($content)) {
-			echo $content;
+			echo do_shortcode($content);
 		}
 		else{ 
 			echo __('Thank you for your purchase.');

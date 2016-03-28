@@ -1,3 +1,7 @@
+## 1.3.4 (March 28, 2016)
+
+- Fixed jQuery on mobile
+
 ## 1.3.3 (March 28, 2016)
 
 - Fixed cart total amount

@@ -50,21 +50,21 @@ if (!class_exists('SimplePay') ) {
 		 * @var      object
 		 */
 		protected static $instance = null;
-		
+
 		/**
 		 * Initialize the plugin
 		 *
 		 * @since     1.0.0
 		 */
 		private function __construct() {
-			
+
 			// Include all necessary files
 			$this->includes();
-			
+
 			// Load all instances
 			add_action('init', array($this, 'init'), 1);
 		}
-		
+
 		/**
 		 * Return an instance of this class.
 		 *

@@ -3,7 +3,7 @@
 Plugin Name: SimplePay
 Plugin URI: http://www.simplepay.ng
 Description: Online and Mobile Payment. Secure. Simple.
-Version: 1.3.4
+Version: 1.3.5
 Author: SimplePay (support@simplepay.ng)
 Author URI: http://www.simplepay.ng
 *
@@ -52,7 +52,7 @@ if ($simplepay_requirements->pass() === false) {
 			echo '<div class="error">' .
 			        '<p>'  .
 					     sprintf(
-						     __('SimplePay requires PHP %1$s and WordPress %2$s to function properly. 
+						     __('SimplePay requires PHP %1$s and WordPress %2$s to function properly.
 						     	PHP version found: %3$s. WordPress installed version: %4$s. 
 						     	Please upgrade to meet the minimum requirements. <a href="http://www.wpupdatephp.com/update/" target=_blank">
 						     	Read more on why it is important to stay updated.</a>', 'sp'),

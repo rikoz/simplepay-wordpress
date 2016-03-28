@@ -1,3 +1,7 @@
+## 1.3.5 (March 28, 2016)
+
+- Fixed cart total amount with multiple shipping methods
+
 ## 1.3.4 (March 28, 2016)
 
 - Fixed jQuery on mobile

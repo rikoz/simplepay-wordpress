@@ -1,3 +1,7 @@
+## 1.3.2 (March 26, 2016)
+
+- Allow shortcodes inside shortcode_accept_simplepay_button_payment_checkout
+
 ## 1.3.1 (March 23, 2016)
 
 - Added missing support for lower denomination in fees

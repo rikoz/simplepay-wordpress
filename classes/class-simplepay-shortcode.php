@@ -179,7 +179,7 @@ if (!class_exists('SimplePay_PaymentsShortcode') ) {
 			$data_string = json_encode($data); 
 
 			ob_start();
-				
+
 			$ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL, 'https://checkout.simplepay.ng/v1/payments/verify/');
 			curl_setopt($ch, CURLOPT_USERPWD, $this->private_key . ':');
@@ -188,18 +188,17 @@ if (!class_exists('SimplePay_PaymentsShortcode') ) {
 			curl_setopt($ch, CURLOPT_POST, true);
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
 			curl_setopt($ch, CURLOPT_HEADER, true);
-			curl_setopt($ch, CURLOPT_HTTPHEADER, array(                                                                          
-				'Content-Type: application/json',                                                                                
-				'Content-Length: ' . strlen($data_string)                                                                       
-			));       
+			curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+				'Content-Type: application/json',
+				'Content-Length: ' . strlen($data_string)
+			));
 			$curl_response = curl_exec($ch);
 			$curl_response = preg_split("/\r\n\r\n/",$curl_response);
 			$response_content = $curl_response[1];
 			$json_response = json_decode(chop($response_content), TRUE);
 			$response_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 			curl_close($ch);
-			
-			
+
 			if ($response_code == '200' && $json_response['response_code'] == '20000') {
 				$order = SimplePay_ButtonOrder::get_instance();
 				$order->insert($_POST, $json_response);

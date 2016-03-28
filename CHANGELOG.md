@@ -1,3 +1,7 @@
+## 1.3.3 (March 28, 2016)
+
+- Fixed cart total amount
+
 ## 1.3.2 (March 26, 2016)
 
 - Allow shortcodes inside shortcode_accept_simplepay_button_payment_checkout

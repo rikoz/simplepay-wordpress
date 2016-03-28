@@ -31,7 +31,7 @@ function init_simplepay_gateway_class() {
 			* Constructor
 			*/
 	      	public function __construct() {
-				
+
 				$this->id					= 'simplepay';
 				$this->icon					= plugins_url('',__FILE__ ).'/../img/icon.png';
 				$this->logo					= plugins_url('',__FILE__ ).'/../img/logo.png';
@@ -40,10 +40,10 @@ function init_simplepay_gateway_class() {
 				$this->has_fields			= true;
 
 				add_action('woocommerce_update_options_payment_gateways_' . $this->id, array($this, 'process_admin_options'));
-				
+
 				// Load the form fieldsx
  				$this->init_form_fields();
- 
+
  				// Load the settings
           		$this->init_settings();
 
@@ -51,7 +51,7 @@ function init_simplepay_gateway_class() {
 				$this->title				= $this->get_option('title');
 				$this->description			= $this->get_option('description');
 				$this->email          		= $this->get_option('email');
-				
+
 				// Get SimplePay admin settings
 				$this->simplepay_admin_settings();
 
@@ -69,7 +69,7 @@ function init_simplepay_gateway_class() {
 			* SimplePay API Keys
 			*/
 			protected function simplepay_admin_settings() {
-				
+
 				$admin_settings = SimplePay_DB::get_instance()->load_admin_data()[0];
 
 				if ($admin_settings->simplepay_test_mode == 1) {
@@ -84,12 +84,12 @@ function init_simplepay_gateway_class() {
 				$this->custom_description = $admin_settings->simplepay_description;
 				$this->custom_image = $admin_settings->simplepay_custom_image_url;
 			}
-			
+
 			/**
 			* Woocommerce icons
 			*/
 			public function get_icon() {
-				
+
 				$icon = $this->icon ? '
 				<img class="simplepay-woocommerce-checkout-logo" src="' . plugins_url('integrations/woocommerce/assets/img/logo-checkout.png', SP_MAIN_FILE) . '" alt="' . esc_attr($this->get_title()) . '" />
 				<a href="https://www.simplepay.ng/" class="simplepay-woocommerce-checkout-learn-more" target="_blank">Learn about SimplePay</a>
@@ -97,12 +97,12 @@ function init_simplepay_gateway_class() {
 
 		        return apply_filters( 'woocommerce_gateway_icon', $icon, $this->id );
 			}
-			
+
 			/**
 			* Initialise Gateway Settings Form Fields
 			*/
 			public function init_form_fields() {
-				
+
 				$this->form_fields = array(
 					'enabled' => array(
 						'title'			=> __('Enable/Disable', 'woocommerce'),
@@ -130,7 +130,7 @@ function init_simplepay_gateway_class() {
 			* Payment scripts
 			*/
 			public function payment_scripts() {
-				
+
 				global $woocommerce;
 				global $post;
 
@@ -142,7 +142,7 @@ function init_simplepay_gateway_class() {
 				wp_localize_script('payment', 'checkout_page', array(
 					'ajax_url' => '?wc-ajax=checkout',
 					'email' => $this->email,
-					'amount' => $woocommerce->cart->subtotal,
+					'amount' => $woocommerce->cart->total,
 					'currency' => get_woocommerce_currency(),
 					'public_key' => $this->public_key,
 					'cart' => $woocommerce,
@@ -157,10 +157,10 @@ function init_simplepay_gateway_class() {
 			/**
 			* Add simplepay_transaction_id field to checkout form
 			*
-			* Hidden to control the form status along with the payment popup 
+			* Hidden to control the form status along with the payment popup
 			*/
 			function simplepay_transaction_id_field($checkout) {
-			    
+
 			    woocommerce_form_field('simplepay_transaction_id', array(
 			        'type'          => 'text',
 			        'required' 		=> true
@@ -171,7 +171,7 @@ function init_simplepay_gateway_class() {
 			* Process the checkout - error message
 			*/
 			function simplepay_transaction_id_field_process() {
-			
+
 				// Check if set, if its not set add an error.
 				if (!$_POST['simplepay_transaction_id']) {
 					wc_add_notice('simplepay_transaction_id', 'error');
@@ -199,12 +199,12 @@ function init_simplepay_gateway_class() {
 			*/
 			public function process_payment($order_id) {
 				global $woocommerce;
-					
+
 				// Verify payment
 				$data = array (
 					'token' => $_POST['simplepay_transaction_id']
 				);
-				$data_string = json_encode($data); 
+				$data_string = json_encode($data);
 
 				$ch = curl_init();
 
@@ -215,9 +215,9 @@ function init_simplepay_gateway_class() {
 				curl_setopt($ch, CURLOPT_POST, true);
 				curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
 				curl_setopt($ch, CURLOPT_HEADER, true);
-				curl_setopt($ch, CURLOPT_HTTPHEADER, array(                                                                          
-				    'Content-Type: application/json',                                                                                
-				    'Content-Length: ' . strlen($data_string)                                                                       
+				curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+				    'Content-Type: application/json',
+				    'Content-Length: ' . strlen($data_string)
 				));
 
 				$curl_response = curl_exec($ch);
@@ -231,7 +231,7 @@ function init_simplepay_gateway_class() {
 
 				if ($response_code == '200' && $json_response['response_code'] == '20000') {
 					$order = wc_get_order($order_id);
-								
+
 					// Complete the payment and reduce stock levels
 					$order->payment_complete();
 
@@ -250,7 +250,7 @@ function init_simplepay_gateway_class() {
 add_action('plugins_loaded', 'init_simplepay_gateway_class');
 
 function add_simplepay_gateway_class($methods){
-	$methods[] = 'WC_Gateway_SimplePay_Gateway'; 
+	$methods[] = 'WC_Gateway_SimplePay_Gateway';
 	return $methods;
 }
 add_filter('woocommerce_payment_gateways', 'add_simplepay_gateway_class');

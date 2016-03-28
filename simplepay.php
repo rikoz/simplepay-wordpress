@@ -3,7 +3,7 @@
 Plugin Name: SimplePay
 Plugin URI: http://www.simplepay.ng
 Description: Online and Mobile Payment. Secure. Simple.
-Version: 1.3.2
+Version: 1.3.3
 Author: SimplePay (support@simplepay.ng)
 Author URI: http://www.simplepay.ng
 *

@@ -154,14 +154,8 @@ function init_simplepay_gateway_class()
                     'order' => $order_data !== null ? $order_data['data']->id : null,
                     'title' => get_bloginfo('name'),
                     'description' => $this->custom_description,
-                    'custom_image' => $this->custom_image
-                ));
-            }
-
-            public function test_localize()
-            {
-                wp_localize_script('payment2', 'cenas', array(
-                    'description' => 'cenas xpto'
+                    'custom_image' => $this->custom_image,
+                    'simplepay_plugin_version' => SP_PLUGIN_VERSION,
                 ));
             }
 
@@ -169,6 +163,7 @@ function init_simplepay_gateway_class()
              * Add simplepay_transaction_id field to checkout form
              *
              * Hidden to control the form status along with the payment popup
+             * Error on this field will be hidden
              */
             function simplepay_transaction_id_field($checkout)
             {
@@ -177,18 +172,6 @@ function init_simplepay_gateway_class()
                     'type' => 'text',
                     'required' => true
                 ), $checkout->get_value('simplepay_transaction_id'));
-            }
-
-            /**
-             * Process the checkout - error message
-             */
-            function simplepay_transaction_id_field_process()
-            {
-
-                // Check if set, if its not set add an error.
-                if (!$_POST['simplepay_transaction_id']) {
-                    wc_add_notice('simplepay_transaction_id', 'error');
-                }
             }
 
             /**
@@ -206,7 +189,7 @@ function init_simplepay_gateway_class()
              */
             function simplepay_transaction_id_field_display_admin_order_meta($order)
             {
-                echo '<p class="form-field"><strong>' . __('SimplePay Transaction ID') . ':</strong><br/>' . get_post_meta($order->id, 'SimplePay Transaction ID', true) . '</p><script>console.log("cenas");</script>';
+                echo '<p class="form-field"><strong>' . __('SimplePay Transaction ID') . ':</strong><br/>' . get_post_meta($order->id, 'SimplePay Transaction ID', true) . '</p>';
             }
 
             /**

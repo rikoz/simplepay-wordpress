@@ -1,3 +1,8 @@
+## 1.4.0 (March 30, 2016)
+
+- Remove simplepay_transaction_id field validation from checkout page
+- Add plugin version in gateway
+
 ## 1.3.5 (March 28, 2016)
 
 - Fixed cart total amount with multiple shipping methods

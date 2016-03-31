@@ -60,7 +60,7 @@ function init_simplepay_gateway_class()
                 $this->simplepay_admin_settings();
 
                 // Hooks
-                wp_enqueue_script('simplepay', 'https://checkout.simplepay.ng/simplepay.js', array(), false, true);
+                wp_enqueue_script('simplepay-js', 'https://checkout.simplepay.ng/simplepay.js', array(), false, true);
                 add_action('wp_enqueue_scripts', array($this, 'payment_scripts'));
 
                 add_action('woocommerce_after_order_notes', array($this, 'simplepay_transaction_id_field'));
@@ -142,7 +142,7 @@ function init_simplepay_gateway_class()
 
                 global $post;
 
-                wp_enqueue_script('payment', SP_DIR_URL . 'lib/js/payment.js', array('jquery'), SP_PAYMENT_SCRIPT_VERSION, true);
+                wp_enqueue_script('payment', SP_DIR_URL . 'lib/js/woocommerce.js', array('jquery'), SP_PAYMENT_SCRIPT_VERSION, true);
 
                 wp_enqueue_style('woocommerce_checkout', SP_DIR_URL . 'integrations/woocommerce/assets/css/checkout-page.css');
 
@@ -163,7 +163,6 @@ function init_simplepay_gateway_class()
              * Add simplepay_transaction_id field to checkout form
              *
              * Hidden to control the form status along with the payment popup
-             * Error on this field will be hidden
              */
             function simplepay_transaction_id_field($checkout)
             {
@@ -173,6 +172,17 @@ function init_simplepay_gateway_class()
                     'required' => true
                 ), $checkout->get_value('simplepay_transaction_id'));
             }
+
+            /**
+             * Process the checkout - error message
+             * Error on this field will be hidden - do not validate on the form submission
+             */
+            function simplepay_transaction_id_field_process()
+            {
+
+                return true;
+            }
+
 
             /**
              * Update the order meta with simplepay_transaction_id field value

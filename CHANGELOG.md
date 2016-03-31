@@ -1,3 +1,8 @@
+## 1.5.0 (March 31, 2016)
+
+- Add support for GiveWP
+- Fix WooCommerce checkout
+
 ## 1.4.0 (March 30, 2016)
 
 - Remove simplepay_transaction_id field validation from checkout page

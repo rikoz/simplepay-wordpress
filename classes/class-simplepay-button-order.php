@@ -97,7 +97,7 @@ if (!class_exists('SimplePay_ButtonOrder') ) {
 			if ($order_details['item_quantity'] == "NA"){
 				$post['post_title'] = $order_details['item_name'].' - '.$order_details['item_price'].' '.$order_details['currency_code'];
 			} else{
-				$post['post_title'] = $order_details['item_quantity'].' '.$order_details['item_name'].' - '.$order_details['item_price'].' '.$order_details['currency_code'];
+				$post['post_title'] = $order_details['item_quantity'].' '.$order_details['item_name'].' - '.$order_details['item_price'].' '.$order_details['currency'];
 			}
 			$post['post_status'] = 'pending';
 
@@ -121,12 +121,12 @@ if (!class_exists('SimplePay_ButtonOrder') ) {
 			$output .= "--------------------------------"."\n";
 			$output .= __("Product Name: ").$order_details['item_name']."\n";
 			$output .= __("Quantity: "). $order_details['item_quantity']."\n";
-			$output .= __("Amount: "). $order_details['item_price'].' '.$order_details['currency_code']."\n";
+			$output .= __("Amount: "). $order_details['item_price'].' '.$order_details['currency']."\n";
 			$output .= "--------------------------------"."\n";
 			if ($order_details['item_quantity'] == "NA"){
-				$output .= __("Total Amount: ").$order_details['item_price'].' '.$order_details['currency_code']."\n";
+				$output .= __("Total Amount: ").$order_details['item_price'].' '.$order_details['currency']."\n";
 			}else{
-				$output .= __("Total Amount: ").($order_details['item_price']*$order_details['item_quantity']).' '.$order_details['currency_code']."\n";
+				$output .= __("Total Amount: ").($order_details['item_price']*$order_details['item_quantity']).' '.$order_details['currency']."\n";
 			}
 			$output .= "\n\n";
 

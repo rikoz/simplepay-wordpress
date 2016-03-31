@@ -3,7 +3,7 @@ Contributors: simplepayng
 Tags: simplepay, payments, payment gateway, visa, mastercard, verve
 Requires at least: 3.6
 Tested up to: 4.4.2
-Stable tag: 1.4.0
+Stable tag: 1.5.0
 License: MIT
 
 SimplePay is the best Online Payment Gateway for the Nigerian market.
@@ -21,7 +21,8 @@ If you don't have a SimplePay account you can register for one at: https://www.s
 
 * Quick installation and setup.
 * Easily take payment for a service from your site via SimplePay.
-* Complete support for woocommerce e-commerce plugin
+* Support for woocommerce e-commerce plugin (https://www.woothemes.com/woocommerce/)
+* Support for Give plugin (https://givewp.com/)
 * Create buy buttons for your products or services on the fly and embed it anywhere on your site using a user-friendly shortcode.
 * Accept donation on your WordPress site for a cause.
 * View purchase orders form buy buttons on your WordPress admin dashboard.
@@ -65,7 +66,7 @@ It supports the following attributes in the shortcode:
     (string) (optional) CSS class to be applyed to button
     Default: 'simplepay-button-style'
 
-`[accept_simplepay_button_payment name="Cool Script" price="50" url="http://example.com/downloads/my-script.zip" button_text="Buy Now"]`
+`[accept_simplepay_button_payment name="Cool Script" price="50" download_url="http://example.com/downloads/my-script.zip" button_text="Buy Now"]`
 
 Note that in most cases you should not touch the page "Button Checkout Page URL". This page is created automatically and is used to by
 wordpress internal system to finalise and record transactions.
@@ -100,6 +101,11 @@ To contribute to this plugin feel free to fork it on GitHub - https://github.com
 
 
 == Changelog ==
+
+= 1.5.0 (March 31, 2016)
+
+- Add support for GiveWP
+- Fix WooCommerce checkout
 
 = 1.4.0 (March 30, 2016)
 

@@ -71,7 +71,7 @@ if (!class_exists('SimplePay_PaymentsShortcode') ) {
 		function shortcode_accept_simplepay_button_payment($atts, $content = "") {
 			
 			// Enqueue the simplepay script
-			wp_enqueue_script('simplepay', 'https://checkout.simplepay.ng/simplepay.js', array(), false, false);
+			wp_enqueue_script('simplepay-js', 'https://checkout.simplepay.ng/simplepay.js', array(), false, false);
 			
 			extract(shortcode_atts(array(
 				'name' => 'Item Name',
@@ -124,28 +124,25 @@ if (!class_exists('SimplePay_PaymentsShortcode') ) {
 						<script>
 						jQuery( document ).ready(function(){
 							var handler = SimplePay.configure({
-							   token: function (token) {
+								token: function (token) {
 									// put token and transaction ID to be sent forward
 									jQuery('#".$form_id."').append(
 										jQuery('<input />', { name: 'token', type: 'hidden', value: token })
 									);
 									jQuery('#".$form_id."').submit();
-							   } ,
-							   key: '".$this->public_key."',
-							   image: '".$this->SimplePayAdminSettings->simplepay_custom_image_url."'        
+								} ,
+								key: '".$this->public_key."',
+								platform: 'wordpress-paybutton-".SP_PLUGIN_VERSION."',
+								image: '".$this->SimplePayAdminSettings->simplepay_custom_image_url."'        
 							});
 							jQuery('#".$form_id."_button').on('click', function (e) {
 								handler.open(SimplePay.CHECKOUT,
 								{
-								   description: '{$description}',
-								   amount: '{$priceInCents}',
-								   currency: 'NGN',
-								   fee_amount: '{$feeInCents}',
-								   fee_label: '{$fee_label}',
-								   address: 'NA',
-								   postal_code: '',
-								   city: 'NA',
-								   country: 'NG'
+									description: '{$description}',
+									amount: '{$priceInCents}',
+									currency: 'NGN',
+									fee_amount: '{$feeInCents}',
+									fee_label: '{$fee_label}'
 								});
 							});
 						});
@@ -155,7 +152,8 @@ if (!class_exists('SimplePay_PaymentsShortcode') ) {
 				$output .= "<input type='hidden' value='{$name}' name='item_name' />";
 				$output .= "<input type='hidden' value='{$price}' name='item_price' />";
 				$output .= "<input type='hidden' value='{$quantity}' name='item_quantity' />";
-				$output .= "<input type='hidden' value='{$currency}' name='currency_code' />";
+				$output .= "<input type='hidden' value='{$currency}' name='currency' />";
+				$output .= "<input type='hidden' value='{$priceInCents}' name='amount' />";
 				$output .= "<input type='hidden' value='{$download_url}' name='download_url' />";
 				$output .= "<input type='hidden' value='{$redirect_url}' name='redirect_url' />";
 				$output .= "</form>";
@@ -174,7 +172,9 @@ if (!class_exists('SimplePay_PaymentsShortcode') ) {
 			$GLOBALS['PaymentSuccessfull'] = false;
 
 			$data = array (
-				'token' => $_POST['token']
+				'token' => $_POST['token'],
+				'amount' => $_POST['amount'],
+				'currency' => $_POST['currency'],
 			);
 			$data_string = json_encode($data); 
 

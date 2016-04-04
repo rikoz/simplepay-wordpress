@@ -1,3 +1,7 @@
+## 1.5.1 (April 4, 2016)
+
+- Fix compatibility with PHP 5.3
+
 ## 1.5.0 (March 31, 2016)
 
 - Add support for GiveWP

@@ -22,7 +22,8 @@ if (!class_exists('SimplePay_PaymentsShortcode') ) {
 		protected static $payment_buttons = array();
 
 		function __construct() {
-			$this->SimplePayAdminSettings = SimplePay_DB::get_instance()->load_admin_data()[0];
+			$settingsDB = SimplePay_DB::get_instance()->load_admin_data();
+			$this->SimplePayAdminSettings = $settingsDB[0];
 			
 			if ($this->SimplePayAdminSettings->simplepay_test_mode == 1) {
 				$this->public_key = $this->SimplePayAdminSettings->simplepay_test_public_api_key;

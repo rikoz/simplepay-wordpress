@@ -75,7 +75,8 @@ function init_simplepay_gateway_class()
             protected function simplepay_admin_settings()
             {
 
-                $admin_settings = SimplePay_DB::get_instance()->load_admin_data()[0];
+                $settingsDB = SimplePay_DB::get_instance()->load_admin_data();
+                $admin_settings = $settingsDB[0];
 
                 if ($admin_settings->simplepay_test_mode == 1) {
                     $this->public_key = $admin_settings->simplepay_test_public_api_key;

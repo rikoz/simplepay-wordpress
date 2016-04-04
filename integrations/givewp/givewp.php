@@ -126,9 +126,10 @@ add_action( 'give_simplepay_cc_form', 'give_simplepay_credit_card_form' );
  * @since       1.5
  * @return      void
  */
-function give_simplepay_process_simplepay_payment( $purchase_data ) {    
-	
-	$admin_settings = SimplePay_DB::get_instance()->load_admin_data()[0];
+function give_simplepay_process_simplepay_payment( $purchase_data ) {
+
+	$settingsDB = SimplePay_DB::get_instance()->load_admin_data();
+	$admin_settings = $settingsDB[0];
 	
 	if (give_is_test_mode()) {
 		$private_key = $admin_settings->simplepay_test_private_api_key;
@@ -268,8 +269,9 @@ add_filter( 'give_payment_statuses', 'give_simplepay_payment_status_labels' );
  * @since       1.5
  * @return      void
  */
-function give_simplepay_js( $override = false ) {   
-	$admin_settings = SimplePay_DB::get_instance()->load_admin_data()[0];
+function give_simplepay_js( $override = false ) {
+	$settingsDB = SimplePay_DB::get_instance()->load_admin_data();
+	$admin_settings = $settingsDB[0];
 
 	if (give_is_test_mode()) {
 		$public_key = $admin_settings->simplepay_test_public_api_key;

@@ -145,18 +145,18 @@ function init_simplepay_gateway_class()
 
                 wp_enqueue_style('woocommerce_checkout', SP_DIR_URL . 'integrations/woocommerce/assets/css/checkout-page.css');
 
-                $order_data = null;
+                $order_data = '';
                 $cart_contents = WC()->cart->cart_contents;
-                $cart_contents_values = array_values($cart_contents[0]);
+                $cart_contents_values = array_values($cart_contents);
                 if (isset($cart_contents_values)) {
-                    $order_data = $cart_contents_values;
+                    $order_data = $cart_contents_values[0]['data']->id;
                 }
 
                 wp_localize_script('payment', 'checkout_page', array(
                     'ajax_url' => '?wc-ajax=checkout',
                     'currency' => get_woocommerce_currency(),
                     'public_key' => $this->public_key,
-                    'order' => $order_data !== null ? $order_data['data']->id : null,
+                    'order' => $order_data,
                     'title' => get_bloginfo('name'),
                     'description' => $this->custom_description,
                     'custom_image' => $this->custom_image,

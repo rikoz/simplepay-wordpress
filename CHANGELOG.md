@@ -1,3 +1,7 @@
+## 1.5.5 (April 5, 2016)
+
+- Fix order id PHP 5.3
+
 ## 1.5.4 (April 5, 2016)
 
 - Fix compatibility with PHP 5.3

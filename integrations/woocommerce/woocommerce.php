@@ -96,12 +96,12 @@ function init_simplepay_gateway_class()
              */
             public function get_icon()
             {
-
-                $icon = $this->icon ? '
-				<img class="simplepay-woocommerce-checkout-logo" src="' . plugins_url('integrations/woocommerce/assets/img/logo-checkout.png', SP_MAIN_FILE) . '" alt="' . esc_attr($this->get_title()) . '" />
+                $icon = '';
+                if ($this->icon) {
+                    $icon = '<img class="simplepay-woocommerce-checkout-logo" src="' . plugins_url('integrations/woocommerce/assets/img/logo-checkout.png', SP_MAIN_FILE) . '" alt="' . esc_attr($this->get_title()) . '" />
 				<a href="https://www.simplepay.ng/" class="simplepay-woocommerce-checkout-learn-more" target="_blank">Learn about SimplePay</a>
-				<script>var simplepay_cart_total = "' . WC()->cart->total . '";</script>
-				' : '';
+				<script>var simplepay_cart_total = "' . WC()->cart->total . '";</script>';
+                }
 
                 return apply_filters('woocommerce_gateway_icon', $icon, $this->id);
             }
@@ -141,13 +141,17 @@ function init_simplepay_gateway_class()
             public function payment_scripts()
             {
 
-                global $post;
-
                 wp_enqueue_script('payment', SP_DIR_URL . 'lib/js/woocommerce.js', array('jquery'), SP_PAYMENT_SCRIPT_VERSION, true);
 
                 wp_enqueue_style('woocommerce_checkout', SP_DIR_URL . 'integrations/woocommerce/assets/css/checkout-page.css');
 
-                $order_data = isset(array_values(WC()->cart->cart_contents)[0]) ? array_values(WC()->cart->cart_contents)[0] : null;
+                $order_data = null;
+                $cart_contents = WC()->cart->cart_contents;
+                $cart_contents_values = array_values($cart_contents[0]);
+                if (isset($cart_contents_values)) {
+                    $order_data = $cart_contents_values;
+                }
+
                 wp_localize_script('payment', 'checkout_page', array(
                     'ajax_url' => '?wc-ajax=checkout',
                     'currency' => get_woocommerce_currency(),

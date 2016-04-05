@@ -1,3 +1,15 @@
+## 1.5.4 (April 5, 2016)
+
+- Fix compatibility with PHP 5.3
+
+## 1.5.3 (April 5, 2016)
+
+- Fix array compatibility with PHP 5.3
+
+## 1.5.2 (April 4, 2016)
+
+- Fix compatibility with PHP 5.3
+
 ## 1.5.1 (April 4, 2016)
 
 - Fix compatibility with PHP 5.3

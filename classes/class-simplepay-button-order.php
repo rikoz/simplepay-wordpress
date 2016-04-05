@@ -66,7 +66,7 @@ if (!class_exists('SimplePay_ButtonOrder') ) {
 
 			register_post_type( 'simplepay_btn_order', $args );
 		}
-		
+
 		/**
 		 * Return an instance of this class.
 		 *
@@ -80,7 +80,7 @@ if (!class_exists('SimplePay_ButtonOrder') ) {
 			if ( null == self::$instance ) {
 				self::$instance = new self;
 			}
-			
+
 			return self::$instance;
 		}
 		/**

@@ -95,7 +95,7 @@ if (!class_exists('SimplePay_ButtonOrder') ) {
 		{
 			$post = array();
 			if ($order_details['item_quantity'] == "NA"){
-				$post['post_title'] = $order_details['item_name'].' - '.$order_details['item_price'].' '.$order_details['currency_code'];
+				$post['post_title'] = $order_details['item_name'].' - '.$order_details['item_price'].' '.$order_details['currency'];
 			} else{
 				$post['post_title'] = $order_details['item_quantity'].' '.$order_details['item_name'].' - '.$order_details['item_price'].' '.$order_details['currency'];
 			}

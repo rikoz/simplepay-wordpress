@@ -1,9 +1,9 @@
 === SimplePay Official Wordpress Plugin ===
 Contributors: simplepayng
-Tags: simplepay, payments, payment gateway, visa, mastercard, verve
+Tags: simplepay, payments, payment gateway, visa, mastercard, verve, givewp, woocommerce
 Requires at least: 3.6
 Tested up to: 4.4.2
-Stable tag: 1.5.5
+Stable tag: 1.5.6
 License: MIT
 
 SimplePay is the best Online Payment Gateway for the Nigerian market.
@@ -31,9 +31,17 @@ If you don't have a SimplePay account you can register for one at: https://www.s
 
 = Buy Button Shortcode Attributes =
 
-In order to create a buy button insert the following shortcode into a post/page.
+In order to create a buy button to accept 5000 Naira insert the following shortcode into a post/page.
 
-`[accept_simplepay_button_payment]`
+`[accept_simplepay_button_payment name="My Product" price="5000" button_text="Buy Now"]`
+
+In order to create a buy button to accept 5000 Naira and download a file after payments insert the following shortcode into a post/page.
+
+`[accept_simplepay_button_payment name="My Product" price="5000" button_text="Buy Now" download_url="http://www.example.com/file.zip"]`
+
+In order to create a buy button to accept 5000 Naira and redirect to a hidden site insert the following shortcode into a post/page.
+
+`[accept_simplepay_button_payment name="My Product" price="5000" button_text="Buy Now" redirect_url="http://www.example.com"]`
 
 It supports the following attributes in the shortcode:
 
@@ -47,8 +55,8 @@ It supports the following attributes in the shortcode:
 
     quantity:
     (number) (optional) Number of products to be charged.
-    Possible Values: '1', '5' etc.
-    Default: 1
+    Possible Values: 'NA', '1', '5' etc.
+    Default: NA
     
     download_url:
     (URL) (optional) URL of the downloadable file.
@@ -62,11 +70,13 @@ It supports the following attributes in the shortcode:
     (string) (optional) Label of the payment button
     Possible Values: 'Buy Now', 'Pay Now' etc
 
-    button_style:
+    button_class:
     (string) (optional) CSS class to be applyed to button
-    Default: 'simplepay-button-style'
+    Default: ''
 
-`[accept_simplepay_button_payment name="Cool Script" price="50" download_url="http://example.com/downloads/my-script.zip" button_text="Buy Now"]`
+    button_style:
+    (string) (optional) CSS style to be applyed to button
+    Default: ''
 
 Note that in most cases you should not touch the page "Button Checkout Page URL". This page is created automatically and is used to by
 wordpress internal system to finalise and record transactions.
@@ -101,6 +111,11 @@ To contribute to this plugin feel free to fork it on GitHub - https://github.com
 
 
 == Changelog ==
+
+= 1.5.6 (April 9, 2016)
+
+- Renamed button_style to button_class, added button_class
+- Changed default quantity to NA
 
 = 1.5.5 (April 5, 2016)
 

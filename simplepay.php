@@ -32,7 +32,7 @@ $simplepay_constants = array(
     'SP_MAIN_FILE' => __FILE__,
     'SP_DIR_PATH' => plugin_dir_path(__FILE__),
     'SP_DIR_URL' => plugin_dir_url(__FILE__),
-    'SP_PLUGIN_VERSION' => '1.5.5',
+    'SP_PLUGIN_VERSION' => '1.5.6',
     'SP_PAYMENT_SCRIPT_VERSION' => '1.0.1'
 );
 foreach ($simplepay_constants as $constant => $value) {

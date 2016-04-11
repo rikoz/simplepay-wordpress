@@ -77,12 +77,13 @@ if (!class_exists('SimplePay_PaymentsShortcode') ) {
 			extract(shortcode_atts(array(
 				'name' => 'Item Name',
 				'price' => '0',
-				'quantity' => '1',
+				'quantity' => 'NA',
 				'download_url' => '',
 				'redirect_url' => '',
 				'currency' => 'NGN',
 				'button_text' => $this->SimplePayAdminSettings->simplepay_button_default_text,
-				'button_style' => 'simplepay-button-style',
+				'button_class' => '',
+				'button_style' => '',
 				'fee_amount' => '',
 				'fee_label' => ''
 							), $atts));
@@ -120,7 +121,7 @@ if (!class_exists('SimplePay_PaymentsShortcode') ) {
 					  $description .= "{$name} - {$quantity} piece".($quantity <> 1 ? "s" : "")." for {$paymentAmount} {$currency}";
 
 				$output = "<form action='" .  $this->SimplePayAdminSettings->simplepay_button_checkout_url . "' METHOD='POST' id='".$form_id."'> ";
-				$output .= "<button type='button' id='".$form_id."_button' class='".$button_style."'>{$button_text}</button>";
+				$output .= "<button type='button' id='".$form_id."_button' class='".$button_class."' style='".$button_style."'>{$button_text}</button>";
 				$output .= "
 						<script>
 						jQuery( document ).ready(function(){

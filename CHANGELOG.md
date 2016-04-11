@@ -1,3 +1,8 @@
+## 1.5.6 (April 9, 2016)
+
+- Renamed button_style to button_class, added button_class
+- Changed default quantity to NA
+
 ## 1.5.5 (April 5, 2016)
 
 - Fix order id PHP 5.3

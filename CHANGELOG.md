@@ -1,3 +1,7 @@
+## 1.5.7 (April 12, 2016)
+
+- Added footer widget
+
 ## 1.5.6 (April 9, 2016)
 
 - Renamed button_style to button_class, added button_class

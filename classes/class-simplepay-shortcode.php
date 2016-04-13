@@ -178,34 +178,31 @@ if (!class_exists('SimplePay_PaymentsShortcode') ) {
 				'amount' => $_POST['amount'],
 				'currency' => $_POST['currency'],
 			);
-			$data_string = json_encode($data); 
 
 			ob_start();
 
-			$ch = curl_init();
-			curl_setopt($ch, CURLOPT_URL, 'https://checkout.simplepay.ng/v1/payments/verify/');
-			curl_setopt($ch, CURLOPT_USERPWD, $this->private_key . ':');
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-			curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
-			curl_setopt($ch, CURLOPT_POST, true);
-			curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
-			curl_setopt($ch, CURLOPT_HEADER, true);
-			curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-				'Content-Type: application/json',
-				'Content-Length: ' . strlen($data_string)
-			));
-			$curl_response = curl_exec($ch);
-			$curl_response = preg_split("/\r\n\r\n/",$curl_response);
-			$response_content = $curl_response[1];
-			$json_response = json_decode(chop($response_content), TRUE);
-			$response_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-			curl_close($ch);
+			$auth = base64_encode( $this->private_key . ':' );
+			$args =  array(
+				'method' => 'POST',
+				'timeout' => 45,
+				'redirection' => 5,
+				'httpversion' => '1.0',
+				'blocking' => true,
+				'headers' => array(
+						'Authorization' => "Basic $auth"
+					),
+				'body' => $data,
+				'cookies' => array()
+			);
 
-			if ($response_code == '200' && $json_response['response_code'] == '20000') {
+			$response = wp_remote_post('https://checkout.simplepay.ng/v1/payments/verify/', $args);
+			$response_body = json_decode($response['body']);
+
+			if (!is_wp_error( $response ) && $response['response']['code'] == 200 && $response_body->response_code == '20000') {
 				$order = SimplePay_ButtonOrder::get_instance();
-				$order->insert($_POST, $json_response);
+				$order->insert($_POST, $response_body);
 
-				do_action('SimplePayButtonPayments_payment_completed', $order, $json_response);
+				do_action('SimplePayButtonPayments_payment_completed', $order, $response_body);
 
 				$GLOBALS['PaymentSuccessfull'] = true;
 				if (!empty($_POST['download_url'])){

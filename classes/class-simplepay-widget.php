@@ -34,7 +34,7 @@ class SimplePay_Widget extends WP_Widget {
 		echo $args['before_widget'];
 
 		// This is where you run the code and display the output
-		echo '<img src="' . SP_DIR_URL . 'assets/img/widget/'. $color . '.png">';
+		echo '<div style="width: 100%; text-align: center"><img src="' . SP_DIR_URL . 'assets/img/widget/'. $color . '.png"></div>';
 		echo $args['after_widget'];
 	}
 

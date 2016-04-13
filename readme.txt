@@ -1,9 +1,9 @@
 === SimplePay Official Wordpress Plugin ===
 Contributors: simplepayng
-Tags: simplepay, payments, payment gateway, visa, mastercard, verve, givewp, woocommerce
+Tags: simplepay, payments, payment gateway, visa, mastercard, verve, givewp, woocommerce, commerce, quick donation, simple donation, wordpress donation, checkout, nigeria
 Requires at least: 3.6
 Tested up to: 4.4.2
-Stable tag: 1.5.7
+Stable tag: 1.6.0
 License: MIT
 
 SimplePay is the best Online Payment Gateway for the Nigerian market.
@@ -22,6 +22,7 @@ If you don't have a SimplePay account you can register for one at: https://www.s
 * Quick installation and setup.
 * Easily take payment for a service from your site via SimplePay.
 * Support for woocommerce e-commerce plugin (https://www.woothemes.com/woocommerce/)
+* Support for woocommerce quick donation (https://wordpress.org/plugins/woocommerce-quick-donation/)
 * Support for Give plugin (https://givewp.com/)
 * Create buy buttons for your products or services on the fly and embed it anywhere on your site using a user-friendly shortcode.
 * Accept donation on your WordPress site for a cause.
@@ -111,6 +112,11 @@ To contribute to this plugin feel free to fork it on GitHub - https://github.com
 
 
 == Changelog ==
+
+= 1.6.0 (April 13, 2016)
+
+- Replaced cURL by wordpress internal library
+- Updated widget html
 
 = 1.5.7 (April 12, 2016)
 

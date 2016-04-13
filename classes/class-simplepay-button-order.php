@@ -59,7 +59,7 @@ if (!class_exists('SimplePay_ButtonOrder') ) {
 				'publicly_queryable'  => false,
 				'capability_type'     => 'post',
 				'capabilities' => array(
-					'create_posts' => false, // Removes support for the "Add New" function
+					'create_posts' => false, // Removes support for the 'Add New' function
 				),
 				'map_meta_cap' => true,
 			);
@@ -93,8 +93,8 @@ if (!class_exists('SimplePay_ButtonOrder') ) {
 		 */
 		public function insert($order_details, $json_response)
 		{
-			$post = array();
-			if ($order_details['item_quantity'] == "NA"){
+            $post = array();
+			if ($order_details['item_quantity'] == 'NA'){
 				$post['post_title'] = $order_details['item_name'].' - '.$order_details['item_price'].' '.$order_details['currency'];
 			} else{
 				$post['post_title'] = $order_details['item_quantity'].' '.$order_details['item_name'].' - '.$order_details['item_price'].' '.$order_details['currency'];
@@ -104,37 +104,36 @@ if (!class_exists('SimplePay_ButtonOrder') ) {
 			$output = '';
 
 			// Add error info in case of failure
-			if( $json_response['response_code'] != '20000' ) {
-
-				$output .= "<h2>Payment Failure Details</h2>"."\n";
-				$output .= "Error code: ".$json_response['response_code'];
-				$output .= "\n\n";
+			if( $json_response->response_code != '20000' ) {
+				$output .= '<h2>Payment Failure Details</h2>'."\n";
+				$output .= 'Error code: '.$json_response->response_code;
+				$output .= '\n\n';
 			}
 			else {
 				$post['post_status'] = 'publish';
 			}
 
-			$output .= __("<h2>Order Details</h2>")."\n";
-			$output .= __("Order Time: ").date("F j, Y, g:i a",strtotime('now'))."\n";
-			$output .= __("Transaction ID: ").$json_response["id"]."\n";
-			$output .= __("Payment Reference: ").$json_response['payment_reference']."\n";
-			$output .= "--------------------------------"."\n";
-			$output .= __("Product Name: ").$order_details['item_name']."\n";
-			$output .= __("Quantity: "). $order_details['item_quantity']."\n";
-			$output .= __("Amount: "). $order_details['item_price'].' '.$order_details['currency']."\n";
-			$output .= "--------------------------------"."\n";
-			if ($order_details['item_quantity'] == "NA"){
-				$output .= __("Total Amount: ").$order_details['item_price'].' '.$order_details['currency']."\n";
+			$output .= __('<h2>Order Details</h2>')."\n";
+			$output .= __('Order Time: ').date('F j, Y, g:i a',strtotime('now'))."\n";
+			$output .= __('Transaction ID: ').$json_response->id."\n";
+			$output .= __('Payment Reference: ').$json_response->payment_reference."\n";
+			$output .= '--------------------------------'."\n";
+			$output .= __('Product Name: ').$order_details['item_name']."\n";
+			$output .= __('Quantity: '). $order_details['item_quantity']."\n";
+			$output .= __('Amount: '). $order_details['item_price'].' '.$order_details['currency']."\n";
+			$output .= '--------------------------------'."\n";
+			if ($order_details['item_quantity'] == 'NA'){
+				$output .= __('Total Amount: ').$order_details['item_price'].' '.$order_details['currency']."\n";
 			}else{
-				$output .= __("Total Amount: ").($order_details['item_price']*$order_details['item_quantity']).' '.$order_details['currency']."\n";
+				$output .= __('Total Amount: ').($order_details['item_price']*$order_details['item_quantity']).' '.$order_details['currency']."\n";
 			}
-			$output .= "\n\n";
+			$output .= '\n\n';
 
-			$output .= __("<h2>Customer Details</h2>")."\n";
-			$output .= __("E-Mail Address: ").$json_response['customer']['email']."\n";
-			$output .= __("Phone: ").$json_response['customer']['phone']."\n";
-			$output .= __("Card Brand: ").$json_response['source']['brand']."\n";
-			$output .= __("Card last 4 digits: ").$json_response['source']['last4']."\n";
+			$output .= __('<h2>Customer Details</h2>')."\n";
+			$output .= __('E-Mail Address: ').$json_response->customer->email."\n";
+			$output .= __('Phone: ').$json_response->customer->phone."\n";
+			$output .= __('Card Brand: ').$json_response->source->brand."\n";
+			$output .= __('Card last 4 digits: ').$json_response->source->last4."\n";
 
 			$post['post_content'] = $output;
 			$post['post_type'] = 'simplepay_btn_order';

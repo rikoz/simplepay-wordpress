@@ -1,3 +1,8 @@
+## 1.6.0 (April 13, 2016)
+
+- Replaced cURL by wordpress internal library
+- Updated widget html
+
 ## 1.5.7 (April 12, 2016)
 
 - Added footer widget

@@ -178,33 +178,29 @@ function give_simplepay_process_simplepay_payment( $purchase_data ) {
 				'amount' => $_POST['give_simplepay_amount'],
 				'currency' => $_POST['give_simplepay_currency'],
 			);
-			$data_string = json_encode($data); 
 
+			$auth = base64_encode( $private_key. ':' );
+			$args =  array(
+				'method' => 'POST',
+				'timeout' => 45,
+				'redirection' => 5,
+				'httpversion' => '1.0',
+				'blocking' => true,
+				'headers' => array(
+						'Authorization' => "Basic $auth"
+					),
+				'body' => $data,
+				'cookies' => array()
+			);
+
+			$response = wp_remote_post('https://checkout.simplepay.ng/v1/payments/verify/', $args);
+			$response_body = json_decode($response['body']);
 			
-			$ch = curl_init();
-			curl_setopt($ch, CURLOPT_URL, 'https://checkout.simplepay.ng/v1/payments/verify/');
-			curl_setopt($ch, CURLOPT_USERPWD, $private_key . ':');
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-			curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
-			curl_setopt($ch, CURLOPT_POST, true);
-			curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
-			curl_setopt($ch, CURLOPT_HEADER, true);
-			curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-				'Content-Type: application/json',
-				'Content-Length: ' . strlen($data_string)
-			));
-			$curl_response = curl_exec($ch);
-			$curl_response = preg_split("/\r\n\r\n/",$curl_response);
-			$response_content = $curl_response[1];
-			$json_response = json_decode(chop($response_content), TRUE);
-			$response_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-			curl_close($ch);
-			
-			if ($response_code == '200' && $json_response['response_code'] == '20000') {
+			if (!is_wp_error( $response ) && $response['response']['code'] == 200 && $response_body->response_code == '20000') {
 				give_update_payment_status( $payment, 'publish' );
 
-				give_set_payment_transaction_id( $payment, $json_response["id"] );
-				give_insert_payment_note( $payment, 'Reference ID: ' . $json_response['payment_reference'] );
+				give_set_payment_transaction_id( $payment, $response_body->id );
+				give_insert_payment_note( $payment, 'Reference ID: ' . $response_body->payment_reference );
 
 				give_send_to_success_page();
 			} else {

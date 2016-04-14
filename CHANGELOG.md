@@ -1,3 +1,8 @@
+## 1.6.1 (April 14, 2016)
+
+- Fix simplepay_transaction_id field missing from checkout
+- Fix verify validation
+
 ## 1.6.0 (April 13, 2016)
 
 - Replaced cURL by wordpress internal library

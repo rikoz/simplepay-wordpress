@@ -232,8 +232,9 @@ function init_simplepay_gateway_class()
                     );
 
                     $response = wp_remote_post('https://checkout.simplepay.ng/v1/payments/verify/', $args);
+                    $response_body = json_decode($response['body']);
 
-                    if (!is_wp_error($response)) {
+                    if (!is_wp_error($response) && $response['response']['code'] == 200 && $response_body->response_code == '20000') {
                         $order = wc_get_order($order_id);
 
                         // Complete the payment and reduce stock levels

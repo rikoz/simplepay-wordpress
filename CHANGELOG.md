@@ -1,3 +1,7 @@
+## 1.6.2 (April 14, 2016)
+
+- Fix verify validation
+
 ## 1.6.1 (April 14, 2016)
 
 - Fix simplepay_transaction_id field missing from checkout

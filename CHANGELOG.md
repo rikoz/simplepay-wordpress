@@ -1,3 +1,7 @@
+## 1.6.4 (April 15, 2016)
+
+- Update php version validation
+
 ## 1.6.3 (April 15, 2016)
 
 - Fix cart totals variable

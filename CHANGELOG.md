@@ -1,3 +1,7 @@
+## 1.6.5 (April 15, 2016)
+
+- Update support for WordPress 4.5
+
 ## 1.6.4 (April 15, 2016)
 
 - Update php version validation

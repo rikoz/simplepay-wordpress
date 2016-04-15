@@ -3,7 +3,7 @@
 Plugin Name: SimplePay
 Plugin URI: http://www.simplepay.ng
 Description: Online and Mobile Payment. Secure. Simple.
-Version: 1.6.4
+Version: 1.6.5
 Author: SimplePay (support@simplepay.ng)
 Author URI: http://www.simplepay.ng
 *
@@ -21,7 +21,7 @@ include_once('simplepay-requirements.php');
 
 // Plugin requirements.
 $simplepay_requires = array(
-    'wp' => '4.0.0',
+    'wp' => '4.5.0',
     'php' => '5.2.0',
     'curl' => '7.30.0'
 );
@@ -32,7 +32,7 @@ $simplepay_constants = array(
     'SP_MAIN_FILE' => __FILE__,
     'SP_DIR_PATH' => plugin_dir_path(__FILE__),
     'SP_DIR_URL' => plugin_dir_url(__FILE__),
-    'SP_PLUGIN_VERSION' => '1.6.4',
+    'SP_PLUGIN_VERSION' => '1.6.5',
     'SP_PAYMENT_SCRIPT_VERSION' => '1.0.1'
 );
 foreach ($simplepay_constants as $constant => $value) {

@@ -91,18 +91,27 @@ function init_simplepay_gateway_class()
             }
 
             /**
-             * Woocommerce icons
+             * Woocommerce gateway icon
              */
             public function get_icon()
             {
                 $icon = '';
                 if ($this->icon) {
                     $icon = '<img class="simplepay-woocommerce-checkout-logo" src="' . plugins_url('integrations/woocommerce/assets/img/logo-checkout.png', SP_MAIN_FILE) . '" alt="' . esc_attr($this->get_title()) . '" />
-				<a href="https://www.simplepay.ng/" class="simplepay-woocommerce-checkout-learn-more" target="_blank">Learn about SimplePay</a>
-				<script>var simplepay_cart_total = "' . WC()->cart->total . '";</script>';
+				<a href="https://www.simplepay.ng/" class="simplepay-woocommerce-checkout-learn-more" target="_blank">Learn about SimplePay</a>';
                 }
 
                 return apply_filters('woocommerce_gateway_icon', $icon, $this->id);
+            }
+
+            /**
+             * Woocommerce gateway description
+             */
+            public function get_description()
+            {
+                $description = $this->description . '<script>var simplepay_cart_total = "' . WC()->cart->total . '";</script>';
+
+                return apply_filters('woocommerce_gateway_description', $description, $this->id);
             }
 
             /**

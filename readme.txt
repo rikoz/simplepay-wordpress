@@ -113,6 +113,10 @@ To contribute to this plugin feel free to fork it on GitHub - https://github.com
 
 == Changelog ==
 
+= 1.6.3 (April 15, 2016)
+
+- Fix cart totals variable
+
 = 1.6.2 (April 14, 2016)
 
 - Fix verify validation

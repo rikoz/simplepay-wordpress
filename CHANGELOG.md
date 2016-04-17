@@ -1,3 +1,7 @@
+## 1.6.6 (April 17, 2016)
+
+- Fix WordPress version in requirements
+
 ## 1.6.5 (April 15, 2016)
 
 - Update support for WordPress 4.5

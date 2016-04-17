@@ -2,8 +2,8 @@
 Contributors: simplepayng
 Tags: simplepay, payments, payment gateway, visa, mastercard, verve, givewp, woocommerce, commerce, quick donation, simple donation, wordpress donation, checkout, nigeria
 Requires at least: 3.6
-Tested up to: 4.4.2
-Stable tag: 1.6.5
+Tested up to: 4.5
+Stable tag: 1.6.6
 License: MIT
 
 SimplePay is the best Online Payment Gateway for the Nigerian market.
@@ -100,8 +100,8 @@ To contribute to this plugin feel free to fork it on GitHub - https://github.com
 == Installation ==
 
 = Requirements =
-* PHP 5.3 or higher
-* Wordpress 3.6 or higher
+* PHP 5.2 or higher
+* WordPress 3.6 or higher
 * cURL 7.30.x or higher
 
 = Instalation steps =
@@ -112,6 +112,10 @@ To contribute to this plugin feel free to fork it on GitHub - https://github.com
 
 
 == Changelog ==
+
+= 1.6.6 (April 17, 2016)
+
+- Fix WordPress version in requirements
 
 = 1.6.5 (April 15, 2016)
 

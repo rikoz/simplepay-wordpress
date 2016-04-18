@@ -113,6 +113,10 @@ To contribute to this plugin feel free to fork it on GitHub - https://github.com
 
 == Changelog ==
 
+= 1.6.7 (April 18, 2016)
+
+- Do not sent to gateway address fields if not available
+
 = 1.6.6 (April 17, 2016)
 
 - Fix WordPress version in requirements

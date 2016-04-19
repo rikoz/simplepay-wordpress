@@ -1,3 +1,7 @@
+## 1.6.8 (April 19, 2016)
+
+- Corrected value format in GiveWP
+
 ## 1.6.7 (April 18, 2016)
 
 - Do not sent to gateway address fields if not available

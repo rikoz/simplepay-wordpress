@@ -1,3 +1,7 @@
+## 1.6.9 (April 22, 2016)
+
+- Update widget images
+
 ## 1.6.8 (April 19, 2016)
 
 - Corrected value format in GiveWP

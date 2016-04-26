@@ -1,3 +1,7 @@
+## 1.7.2 (April 26, 2016)
+
+- Fix verify payment validation
+
 ## 1.7.1 (April 26, 2016)
 
 - Fix verify payment in pay button

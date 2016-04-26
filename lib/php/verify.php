@@ -24,10 +24,10 @@ function verify_transaction($token, $amount, $currency, $private_key)
 
     $verify_count = 1;
     $response = do_curl($ch);
-    $verified = validate_response($response);
+    $verified = valid_response($response);
     while (!$verified && $verify_count < 3) {
         $response = do_curl($ch);
-        $verified = validate_response($response);
+        $verified = valid_response($response);
         $verify_count += 1;
     }
 
@@ -51,9 +51,9 @@ function do_curl($ch)
     );
 }
 
-function validate_response($response)
+function valid_response($response)
 {
-    return $response['response_code'] != '200' ||
-    $response['response_code'] != '201' ||
-    $response['json_response']['response_code'] != '20000';
+    return $response['response_code'] == '200' ||
+    $response['response_code'] == '201' ||
+    $response['json_response']['response_code'] == '20000';
 }

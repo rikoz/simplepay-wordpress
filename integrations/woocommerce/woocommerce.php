@@ -221,29 +221,16 @@ function init_simplepay_gateway_class()
             public function process_payment($order_id)
             {
                 if (!empty($_POST['simplepay_transaction_id'])) {
-                    // Verify SimplePay payment
-                    $data = array(
-                        'token' => $_POST['simplepay_transaction_id']
-                    );
+                    $verified_transaction = verify_transaction(
+                        $_POST['simplepay_transaction_id'],
+                        WC()->cart->total,
+                        get_woocommerce_currency(),
+                        $this->private_key);
 
-                    $auth = base64_encode($this->private_key . ':');
-                    $args = array(
-                        'method' => 'POST',
-                        'timeout' => 45,
-                        'redirection' => 5,
-                        'httpversion' => '1.0',
-                        'blocking' => true,
-                        'headers' => array(
-                            'Authorization' => "Basic $auth"
-                        ),
-                        'body' => $data,
-                        'cookies' => array()
-                    );
+                    if ($verified_transaction['verified']) {
+                        // Update the order meta with the new transaction id
+                        update_post_meta($order_id, 'SimplePay Transaction ID', $verified_transaction['response']['id']);
 
-                    $response = wp_remote_post('https://checkout.simplepay.ng/v1/payments/verify/', $args);
-                    $response_body = json_decode($response['body']);
-
-                    if (!is_wp_error($response) && $response['response']['code'] == 200 && $response_body->response_code == '20000') {
                         $order = wc_get_order($order_id);
 
                         // Complete the payment and reduce stock levels
@@ -272,5 +259,3 @@ function add_simplepay_gateway_class($methods)
 }
 
 add_filter('woocommerce_payment_gateways', 'add_simplepay_gateway_class');
-
-?>

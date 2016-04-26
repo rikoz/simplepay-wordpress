@@ -3,7 +3,7 @@
 Plugin Name: SimplePay
 Plugin URI: http://www.simplepay.ng
 Description: Online and Mobile Payment. Secure. Simple.
-Version: 1.6.9
+Version: 1.7.0
 Author: SimplePay (support@simplepay.ng)
 Author URI: http://www.simplepay.ng
 *
@@ -32,7 +32,7 @@ $simplepay_constants = array(
     'SP_MAIN_FILE' => __FILE__,
     'SP_DIR_PATH' => plugin_dir_path(__FILE__),
     'SP_DIR_URL' => plugin_dir_url(__FILE__),
-    'SP_PLUGIN_VERSION' => '1.6.9',
+    'SP_PLUGIN_VERSION' => '1.7.0',
     'SP_PAYMENT_SCRIPT_VERSION' => '1.0.1'
 );
 foreach ($simplepay_constants as $constant => $value) {
@@ -84,6 +84,9 @@ require_once SP_DIR_PATH . 'classes/class-simplepay.php';
 require_once SP_DIR_PATH . 'classes/class-simplepay-shortcode.php';
 // Load the widget class
 require_once SP_DIR_PATH . 'classes/class-simplepay-widget.php';
+// Load verify transaction lib.
+require_once SP_DIR_PATH . 'lib/php/verify.php';
+
 
 // Register hooks that are fired when the plugin is activated, deactivated, and uninstalled, respectively.
 register_activation_hook(SP_MAIN_FILE, array('SimplePay', 'activate'));

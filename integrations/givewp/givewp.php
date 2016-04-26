@@ -6,7 +6,7 @@
 
 // Exit if accessed directly.
 if (!defined('ABSPATH')) {
-	exit;
+    exit;
 }
 
 /*
@@ -15,10 +15,12 @@ if (!defined('ABSPATH')) {
  * @access      public
  * @since       1.5
  */
-function give_simplepay_add_nigerian_currency($currencies) {
-	$currencies['NGN'] = __( 'Nigerian Naira (&#8358;)', 'give' );
-	return $currencies;
+function give_simplepay_add_nigerian_currency($currencies)
+{
+    $currencies['NGN'] = __('Nigerian Naira (&#8358;)', 'give');
+    return $currencies;
 }
+
 add_filter('give_currencies', 'give_simplepay_add_nigerian_currency');
 
 /*
@@ -28,16 +30,17 @@ add_filter('give_currencies', 'give_simplepay_add_nigerian_currency');
  * @access      public
  * @since       1.5
  */
-function give_simplepay_add_naira_symbol($symbol, $currency) {
-	switch ( $currency ) :
-		case "NGN" :
-			$symbol = '&#8358;';
-			break;
-	endswitch;
-	return $symbol;
+function give_simplepay_add_naira_symbol($symbol, $currency)
+{
+    switch ($currency) :
+        case "NGN" :
+            $symbol = '&#8358;';
+            break;
+    endswitch;
+    return $symbol;
 }
 
-add_filter('give_currency_symbol', 'give_simplepay_add_naira_symbol', 10,2);
+add_filter('give_currency_symbol', 'give_simplepay_add_naira_symbol', 10, 2);
 
 /**
  * No Decimals
@@ -46,11 +49,12 @@ add_filter('give_currency_symbol', 'give_simplepay_add_naira_symbol', 10,2);
  * @since       1.5
  * @return int
  */
-function give_simplepay_remove_decimals() {
-	return 0;
+function give_simplepay_remove_decimals()
+{
+    return 0;
 }
 
-add_filter( 'give_format_amount_decimals', 'give_simplepay_remove_decimals' );
+add_filter('give_format_amount_decimals', 'give_simplepay_remove_decimals');
 
 
 /**
@@ -60,11 +64,12 @@ add_filter( 'give_format_amount_decimals', 'give_simplepay_remove_decimals' );
  * @since       1.5
  * @return      void
  */
-function give_simplepay_textdomain() {
-	load_plugin_textdomain( 'give-simplepay', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+function give_simplepay_textdomain()
+{
+    load_plugin_textdomain('give-simplepay', false, dirname(plugin_basename(__FILE__)) . '/languages/');
 }
 
-add_action( 'init', 'give_simplepay_textdomain' );
+add_action('init', 'give_simplepay_textdomain');
 
 /**
  * Register our payment gateway
@@ -74,19 +79,20 @@ add_action( 'init', 'give_simplepay_textdomain' );
  * @return      array
  */
 
-function give_simplepay_register_gateway( $gateways ) {
-	$gateways['simplepay'] = array(
-		'admin_label'    => 'SimplePay',
-		'checkout_label' => __( 'Master Card, Visa and Verve (Processed by SimplePay)', 'give-simplepay' ),
-		'supports'       => array(
-			'buy_now'
-		)
-	);
+function give_simplepay_register_gateway($gateways)
+{
+    $gateways['simplepay'] = array(
+        'admin_label' => 'SimplePay',
+        'checkout_label' => __('Master Card, Visa and Verve (Processed by SimplePay)', 'give-simplepay'),
+        'supports' => array(
+            'buy_now'
+        )
+    );
 
-	return $gateways;
+    return $gateways;
 }
 
-add_filter( 'give_payment_gateways', 'give_simplepay_register_gateway' );
+add_filter('give_payment_gateways', 'give_simplepay_register_gateway');
 
 
 /**
@@ -97,11 +103,12 @@ add_filter( 'give_payment_gateways', 'give_simplepay_register_gateway' );
  * @return      void
  */
 
-function give_simplepay_add_simplepay_errors() {
-	echo '<div id="give-simplepay-payment-errors"></div>';
+function give_simplepay_add_simplepay_errors()
+{
+    echo '<div id="give-simplepay-payment-errors"></div>';
 }
 
-add_action( 'give_after_cc_fields', 'give_simplepay_add_simplepay_errors', 999 );
+add_action('give_after_cc_fields', 'give_simplepay_add_simplepay_errors', 999);
 
 /**
  * simplepay uses it's own credit card form because the card details are tokenized.
@@ -112,12 +119,13 @@ add_action( 'give_after_cc_fields', 'give_simplepay_add_simplepay_errors', 999 )
  * @since       1.5
  * @return      void
  */
-function give_simplepay_credit_card_form() {
+function give_simplepay_credit_card_form()
+{
 
 
 }
 
-add_action( 'give_simplepay_cc_form', 'give_simplepay_credit_card_form' );
+add_action('give_simplepay_cc_form', 'give_simplepay_credit_card_form');
 
 /**
  * Process simplepay checkout submission
@@ -126,100 +134,83 @@ add_action( 'give_simplepay_cc_form', 'give_simplepay_credit_card_form' );
  * @since       1.5
  * @return      void
  */
-function give_simplepay_process_simplepay_payment( $purchase_data ) {
+function give_simplepay_process_simplepay_payment($purchase_data)
+{
 
-	$settingsDB = SimplePay_DB::get_instance()->load_admin_data();
-	$admin_settings = $settingsDB[0];
-	
-	if (give_is_test_mode()) {
-		$private_key = $admin_settings->simplepay_test_private_api_key;
-	} else {
-		$private_key = $admin_settings->simplepay_live_private_api_key;
-	}
+    $settingsDB = SimplePay_DB::get_instance()->load_admin_data();
+    $admin_settings = $settingsDB[0];
 
-	$purchase_summary = give_get_purchase_summary( $purchase_data, false );
+    if (give_is_test_mode()) {
+        $private_key = $admin_settings->simplepay_test_private_api_key;
+    } else {
+        $private_key = $admin_settings->simplepay_live_private_api_key;
+    }
 
-	// make sure we don't have any left over errors present
-	give_clear_errors();
+    $purchase_summary = give_get_purchase_summary($purchase_data, false);
 
-	if ( ! isset( $_POST['give_simplepay_token'] ) ) {
-		// no simplepay token
-		give_set_error( 'no_token', __( 'Missing simplepay token. Please contact support.', 'give-simplepay' ) );
-		give_record_gateway_error( __( 'Missing simplepay Token', 'give-simplepay' ), __( 'A simplepay token failed to be generated. Please check simplepay logs for more information', 'give-simplepay' ) );
-	} else {
-		$card_data = $_POST['give_simplepay_token'];
-	}
+    // make sure we don't have any left over errors present
+    give_clear_errors();
 
-	$errors = give_get_errors();
+    if (!isset($_POST['give_simplepay_token'])) {
+        // no simplepay token
+        give_set_error('no_token', __('Missing simplepay token. Please contact support.', 'give-simplepay'));
+        give_record_gateway_error(__('Missing simplepay Token', 'give-simplepay'), __('A simplepay token failed to be generated. Please check simplepay logs for more information', 'give-simplepay'));
+    } else {
+        $card_data = $_POST['give_simplepay_token'];
+    }
 
-	if ( ! $errors ) {
+    $errors = give_get_errors();
 
-		try {
+    if (!$errors) {
 
-			// setup the payment details
-			$payment_data = array(
-				'price'           => $purchase_data['price'],
-				'give_form_title' => $purchase_data['post_data']['give-form-title'],
-				'give_form_id'    => intval( $purchase_data['post_data']['give-form-id'] ),
-				'date'            => $purchase_data['date'],
-				'user_email'      => $purchase_data['user_email'],
-				'purchase_key'    => $purchase_data['purchase_key'],
-				'currency'        => give_get_currency(),
-				'user_info'       => $purchase_data['user_info'],
-				'status'          => 'pending',
-				'gateway'         => 'simplepay'
-			);
-			
-			// record the pending payment
-			$payment = give_insert_payment( $payment_data );
-			
-			$data = array (
-				'token' => $_POST['give_simplepay_token'],
-				'amount' => $_POST['give_simplepay_amount'],
-				'currency' => $_POST['give_simplepay_currency'],
-			);
+        try {
 
-			$auth = base64_encode( $private_key. ':' );
-			$args =  array(
-				'method' => 'POST',
-				'timeout' => 45,
-				'redirection' => 5,
-				'httpversion' => '1.0',
-				'blocking' => true,
-				'headers' => array(
-						'Authorization' => "Basic $auth"
-					),
-				'body' => $data,
-				'cookies' => array()
-			);
+            // setup the payment details
+            $payment_data = array(
+                'price' => $purchase_data['price'],
+                'give_form_title' => $purchase_data['post_data']['give-form-title'],
+                'give_form_id' => intval($purchase_data['post_data']['give-form-id']),
+                'date' => $purchase_data['date'],
+                'user_email' => $purchase_data['user_email'],
+                'purchase_key' => $purchase_data['purchase_key'],
+                'currency' => give_get_currency(),
+                'user_info' => $purchase_data['user_info'],
+                'status' => 'pending',
+                'gateway' => 'simplepay'
+            );
 
-			$response = wp_remote_post('https://checkout.simplepay.ng/v1/payments/verify/', $args);
-			$response_body = json_decode($response['body']);
-			
-			if (!is_wp_error( $response ) && $response['response']['code'] == 200 && $response_body->response_code == '20000') {
-				give_update_payment_status( $payment, 'publish' );
+            // record the pending payment
+            $payment = give_insert_payment($payment_data);
 
-				give_set_payment_transaction_id( $payment, $response_body->id );
-				give_insert_payment_note( $payment, 'Reference ID: ' . $response_body->payment_reference );
+            // verify transaction
+            $verified_transaction = verify_transaction(
+                $_POST['give_simplepay_token'],
+                $_POST['give_simplepay_amount'],
+                $_POST['give_simplepay_currency'],
+                $private_key);
 
-				give_send_to_success_page();
-			} else {
-				give_set_error( 'payment_not_recorded', __( 'Your payment could not be recorded, please contact the site administrator.', 'give-simplepay' ) );
-				// if errors are present, send the user back to the purchase page so they can be corrected
-				give_send_back_to_checkout( '?payment-mode=simplepay' );
-			}
-		}
-		catch ( Exception $e ) {
-			give_set_error( 'api_error', __( 'Something went wrong.', 'give-simplepay' ) );
-			give_send_back_to_checkout( '?payment-mode=simplepay' );
-		}
-	} else {
-		give_send_back_to_checkout( '?payment-mode=simplepay' );
-	}
+            if ($verified_transaction['verified']) {
+                give_update_payment_status($payment, 'publish');
+
+                give_set_payment_transaction_id($payment, $verified_transaction['response']['id']);
+                give_insert_payment_note($payment, 'Reference ID: ' . $verified_transaction['response']['payment_reference']);
+
+                give_send_to_success_page();
+            } else {
+                give_set_error('payment_not_recorded', __('Your payment could not be recorded, please contact the site administrator.', 'give-simplepay'));
+                // if errors are present, send the user back to the purchase page so they can be corrected
+                give_send_back_to_checkout('?payment-mode=simplepay');
+            }
+        } catch (Exception $e) {
+            give_set_error('api_error', __('Something went wrong.', 'give-simplepay'));
+            give_send_back_to_checkout('?payment-mode=simplepay');
+        }
+    } else {
+        give_send_back_to_checkout('?payment-mode=simplepay');
+    }
 }
 
-add_action( 'give_gateway_simplepay', 'give_simplepay_process_simplepay_payment' );
-
+add_action('give_gateway_simplepay', 'give_simplepay_process_simplepay_payment');
 
 
 /**
@@ -228,18 +219,19 @@ add_action( 'give_gateway_simplepay', 'give_simplepay_process_simplepay_payment'
  * @since 1.5
  * @return void
  */
-function give_simplepay_register_post_statuses() {
-	register_post_status( 'cancelled', array(
-		'label'                     => _x( 'Cancelled', 'Cancelled payment', 'give-simplepay' ),
-		'public'                    => true,
-		'exclude_from_search'       => false,
-		'show_in_admin_all_list'    => true,
-		'show_in_admin_status_list' => true,
-		'label_count'               => _n_noop( 'Active <span class="count">(%s)</span>', 'Active <span class="count">(%s)</span>', 'give-simplepay' )
-	) );
+function give_simplepay_register_post_statuses()
+{
+    register_post_status('cancelled', array(
+        'label' => _x('Cancelled', 'Cancelled payment', 'give-simplepay'),
+        'public' => true,
+        'exclude_from_search' => false,
+        'show_in_admin_all_list' => true,
+        'show_in_admin_status_list' => true,
+        'label_count' => _n_noop('Active <span class="count">(%s)</span>', 'Active <span class="count">(%s)</span>', 'give-simplepay')
+    ));
 }
 
-add_action( 'init', 'give_simplepay_register_post_statuses', 110 );
+add_action('init', 'give_simplepay_register_post_statuses', 110);
 
 
 /**
@@ -248,14 +240,15 @@ add_action( 'init', 'give_simplepay_register_post_statuses', 110 );
  * @since 1.5
  * @return array
  */
-function give_simplepay_payment_status_labels( $statuses ) {
-	$statuses['preapproval'] = __( 'Preapproved', 'give-simplepay' );
-	$statuses['cancelled']   = __( 'Cancelled', 'give-simplepay' );
+function give_simplepay_payment_status_labels($statuses)
+{
+    $statuses['preapproval'] = __('Preapproved', 'give-simplepay');
+    $statuses['cancelled'] = __('Cancelled', 'give-simplepay');
 
-	return $statuses;
+    return $statuses;
 }
 
-add_filter( 'give_payment_statuses', 'give_simplepay_payment_status_labels' );
+add_filter('give_payment_statuses', 'give_simplepay_payment_status_labels');
 
 
 /**
@@ -265,36 +258,37 @@ add_filter( 'give_payment_statuses', 'give_simplepay_payment_status_labels' );
  * @since       1.5
  * @return      void
  */
-function give_simplepay_js( $override = false ) {
-	$settingsDB = SimplePay_DB::get_instance()->load_admin_data();
-	$admin_settings = $settingsDB[0];
+function give_simplepay_js($override = false)
+{
+    $settingsDB = SimplePay_DB::get_instance()->load_admin_data();
+    $admin_settings = $settingsDB[0];
 
-	if (give_is_test_mode()) {
-		$public_key = $admin_settings->simplepay_test_public_api_key;
-	} else {
-		$public_key = $admin_settings->simplepay_live_public_api_key;
-	}
+    if (give_is_test_mode()) {
+        $public_key = $admin_settings->simplepay_test_public_api_key;
+    } else {
+        $public_key = $admin_settings->simplepay_live_public_api_key;
+    }
 
-	if ( give_is_gateway_active( 'simplepay' ) ) {
+    if (give_is_gateway_active('simplepay')) {
 
-		wp_enqueue_script( 'simplepay-js', 'https://checkout.simplepay.ng/simplepay.js', array( 'jquery' ), false, true );
-		wp_enqueue_script( 'give-simplepay-js', SP_DIR_URL . 'lib/js/givewp.js', array(
-			'jquery',
-			'simplepay-js' ));
+        wp_enqueue_script('simplepay-js', 'https://checkout.simplepay.ng/simplepay.js', array('jquery'), false, true);
+        wp_enqueue_script('give-simplepay-js', SP_DIR_URL . 'lib/js/givewp.js', array(
+            'jquery',
+            'simplepay-js'));
 
-		$simplepay_vars = array(
-			'public_key' => $public_key,
-			'custom_image' => $admin_settings->simplepay_custom_image_url,
-			'simplepay_plugin_version' => SP_PLUGIN_VERSION
-		);
+        $simplepay_vars = array(
+            'public_key' => $public_key,
+            'custom_image' => $admin_settings->simplepay_custom_image_url,
+            'simplepay_plugin_version' => SP_PLUGIN_VERSION
+        );
 
-		wp_localize_script( 'give-simplepay-js', 'give_simplepay_vars', $simplepay_vars );
+        wp_localize_script('give-simplepay-js', 'give_simplepay_vars', $simplepay_vars);
 
-	}
+    }
 
 }
 
-add_action( 'wp_enqueue_scripts', 'give_simplepay_js', 100 );
+add_action('wp_enqueue_scripts', 'give_simplepay_js', 100);
 
 /**
  * Get the meta key for storing simplepay customer IDs in
@@ -303,14 +297,15 @@ add_action( 'wp_enqueue_scripts', 'give_simplepay_js', 100 );
  * @since       1.5
  * @return      void
  */
-function give_simplepay_get_customer_key() {
+function give_simplepay_get_customer_key()
+{
 
-	$key = '_give_simplepay_customer_id';
-	if ( give_is_test_mode() ) {
-		$key .= '_test';
-	}
+    $key = '_give_simplepay_customer_id';
+    if (give_is_test_mode()) {
+        $key .= '_test';
+    }
 
-	return $key;
+    return $key;
 }
 
 
@@ -321,22 +316,23 @@ function give_simplepay_get_customer_key() {
  *
  * @return string                   Transaction ID
  */
-function give_simplepay_get_payment_transaction_id( $payment_id ) {
+function give_simplepay_get_payment_transaction_id($payment_id)
+{
 
-	$notes          = give_get_payment_notes( $payment_id );
-	$transaction_id = '';
+    $notes = give_get_payment_notes($payment_id);
+    $transaction_id = '';
 
-	foreach ( $notes as $note ) {
-		if ( preg_match( '/^simplepay Charge ID: ([^\s]+)/', $note->comment_content, $match ) ) {
-			$transaction_id = $match[1];
-			continue;
-		}
-	}
+    foreach ($notes as $note) {
+        if (preg_match('/^simplepay Charge ID: ([^\s]+)/', $note->comment_content, $match)) {
+            $transaction_id = $match[1];
+            continue;
+        }
+    }
 
-	return apply_filters( 'give_simplepay_set_payment_transaction_id', $transaction_id, $payment_id );
+    return apply_filters('give_simplepay_set_payment_transaction_id', $transaction_id, $payment_id);
 }
 
-add_filter( 'give_get_payment_transaction_id-simplepay', 'give_simplepay_get_payment_transaction_id', 10, 1 );
+add_filter('give_get_payment_transaction_id-simplepay', 'give_simplepay_get_payment_transaction_id', 10, 1);
 
 
 /**
@@ -345,20 +341,21 @@ add_filter( 'give_get_payment_transaction_id-simplepay', 'give_simplepay_get_pay
  * @since  1.5
  * @return array
  */
-function give_simplepay_straight_to_gateway_data( $purchase_data ) {
+function give_simplepay_straight_to_gateway_data($purchase_data)
+{
 
-	if ( isset( $_REQUEST['give_simplepay_token'] ) ) {
-		$purchase_data['gateway'] = 'simplepay';
-		$_REQUEST['give-gateway'] = 'simplepay';
+    if (isset($_REQUEST['give_simplepay_token'])) {
+        $purchase_data['gateway'] = 'simplepay';
+        $_REQUEST['give-gateway'] = 'simplepay';
 
-		if ( isset( $_REQUEST['give_email'] ) ) {
-			$purchase_data['user_info']['email'] = $_REQUEST['give_email'];
-			$purchase_data['user_email']         = $_REQUEST['give_email'];
-		}
+        if (isset($_REQUEST['give_email'])) {
+            $purchase_data['user_info']['email'] = $_REQUEST['give_email'];
+            $purchase_data['user_email'] = $_REQUEST['give_email'];
+        }
 
-	}
+    }
 
-	return $purchase_data;
+    return $purchase_data;
 }
 
-add_filter( 'give_straight_to_gateway_purchase_data', 'give_simplepay_straight_to_gateway_data' );
+add_filter('give_straight_to_gateway_purchase_data', 'give_simplepay_straight_to_gateway_data');

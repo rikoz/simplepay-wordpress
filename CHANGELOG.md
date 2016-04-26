@@ -1,3 +1,8 @@
+## 1.7.0 (April 26, 2016)
+
+- Add retry to verify payment
+- Fix SimplePay transaction ID in WooCommerce
+
 ## 1.6.9 (April 22, 2016)
 
 - Update widget images

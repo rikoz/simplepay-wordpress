@@ -1,3 +1,7 @@
+## 1.7.1 (April 26, 2016)
+
+- Fix verify payment in pay button
+
 ## 1.7.0 (April 26, 2016)
 
 - Add retry to verify payment

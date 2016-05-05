@@ -131,7 +131,7 @@ function init_simplepay_gateway_class()
                         'title' => __('Title', 'woocommerce'),
                         'type' => 'text',
                         'description' => __('This controls the title which the user sees during checkout.', 'woocommerce'),
-                        'default' => __('SimplePay', 'woocommerce'),
+                        'default' => __('Debit/ Credit Cards', 'woocommerce'),
                         'desc_tip' => true,
                     ),
                     'description' => array(
@@ -223,7 +223,7 @@ function init_simplepay_gateway_class()
                 if (!empty($_POST['simplepay_transaction_id'])) {
                     $verified_transaction = verify_transaction(
                         $_POST['simplepay_transaction_id'],
-                        WC()->cart->total,
+                        WC()->cart->total * 100,
                         get_woocommerce_currency(),
                         $this->private_key);
 

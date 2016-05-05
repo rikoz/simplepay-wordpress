@@ -1,3 +1,7 @@
+## 1.7.3 (May 5, 2016)
+
+- Fix amount in verify payment validation
+
 ## 1.7.2 (April 26, 2016)
 
 - Fix verify payment validation

@@ -27,6 +27,7 @@ function init_simplepay_gateway_class()
     global $wpdb;
 
     if (class_exists('WC_Payment_Gateway')) {
+
         class WC_Gateway_SimplePay_Gateway extends WC_Payment_Gateway
         {
 
@@ -60,9 +61,6 @@ function init_simplepay_gateway_class()
                 $this->simplepay_admin_settings();
 
                 // Hooks
-                wp_enqueue_script('simplepay-js', 'https://checkout.simplepay.ng/simplepay.js', array(), false, true);
-                add_action('wp_enqueue_scripts', array($this, 'payment_scripts'));
-
                 add_action('woocommerce_after_checkout_validation', array($this, 'simplepay_transaction_id_field_process'));
                 add_action('woocommerce_checkout_update_order_meta', array($this, 'simplepay_transaction_id_field_update_order_meta'));
                 add_action('woocommerce_admin_order_data_after_billing_address', array($this, 'simplepay_transaction_id_field_display_admin_order_meta'), 10, 1);
@@ -73,21 +71,32 @@ function init_simplepay_gateway_class()
              */
             protected function simplepay_admin_settings()
             {
+                global $woocommerce;
+                global $wp_version;
 
                 $settingsDB = SimplePay_DB::get_instance()->load_admin_data();
                 $admin_settings = $settingsDB[0];
 
-                if ($admin_settings->simplepay_test_mode == 1) {
-                    $this->public_key = $admin_settings->simplepay_test_public_api_key;
-                    $this->private_key = $admin_settings->simplepay_test_private_api_key;
+                SimplePayPaymentsLibrary::sandboxMode($admin_settings->simplepay_test_mode);
+                SimplePayPaymentsLibrary::liveKeys(
+                    Array(
+                        'public' => $admin_settings->simplepay_live_public_api_key,
+                        'private' => $admin_settings->simplepay_live_private_api_key
+                    )
+                );
 
-                } else {
-                    $this->public_key = $admin_settings->simplepay_live_public_api_key;
-                    $this->private_key = $admin_settings->simplepay_live_private_api_key;
-                }
+                SimplePayPaymentsLibrary::testKeys(
+                    Array(
+                        'public' => $admin_settings->simplepay_test_public_api_key,
+                        'private' => $admin_settings->simplepay_test_private_api_key
+                    )
+                );
 
-                $this->custom_description = $admin_settings->simplepay_description;
-                $this->custom_image = $admin_settings->simplepay_custom_image_url;
+                SimplePayPaymentsLibrary::customCheckOutDescription($admin_settings->simplepay_description);
+                SimplePayPaymentsLibrary::customCheckOutImg($admin_settings->simplepay_custom_image_url);
+                SimplePayPaymentsLibrary::completeTransactionURL($admin_settings->simplepay_button_checkout_url);
+                SimplePayPaymentsLibrary::platform('Wordpress '.$wp_version.' WooCommerce '.$woocommerce->version);
+
             }
 
             /**
@@ -143,34 +152,6 @@ function init_simplepay_gateway_class()
                 );
             }
 
-            /**
-             * Payment scripts
-             */
-            public function payment_scripts()
-            {
-
-                wp_enqueue_script('payment', SP_DIR_URL . 'lib/js/woocommerce.js', array('jquery'), SP_PAYMENT_SCRIPT_VERSION, true);
-
-                wp_enqueue_style('woocommerce_checkout', SP_DIR_URL . 'integrations/woocommerce/assets/css/checkout-page.css');
-
-                $order_data = '';
-                $cart_contents = WC()->cart->cart_contents;
-                $cart_contents_values = array_values($cart_contents);
-                if (!empty($cart_contents_values)) {
-                    $order_data = $cart_contents_values[0]['data']->id;
-                }
-
-                wp_localize_script('payment', 'checkout_page', array(
-                    'ajax_url' => '?wc-ajax=checkout',
-                    'currency' => get_woocommerce_currency(),
-                    'public_key' => $this->public_key,
-                    'order' => $order_data,
-                    'title' => get_bloginfo('name'),
-                    'description' => $this->custom_description,
-                    'custom_image' => $this->custom_image,
-                    'simplepay_plugin_version' => SP_PLUGIN_VERSION,
-                ));
-            }
 
             /**
              * Add simplepay_transaction_id field to checkout form
@@ -192,7 +173,6 @@ function init_simplepay_gateway_class()
              */
             function simplepay_transaction_id_field_process()
             {
-
                 return true;
             }
 
@@ -215,35 +195,104 @@ function init_simplepay_gateway_class()
                 echo '<p class="form-field"><strong>' . __('SimplePay Transaction ID') . ':</strong><br/>' . get_post_meta($order->id, 'SimplePay Transaction ID', true) . '</p>';
             }
 
+
+            function payment_fields()
+            {
+
+                echo 'Master Card, Visa and Verve (Processed securely by SimplePay)';
+
+                SimplePayPaymentsLibrary::initializeGateway('checkout', 'preventFunction');
+                SimplePayPaymentsLibrary::paymentForms(false);
+
+                $transaction = new SimplePayTransaction(
+                    Array(
+                        'amount' => WC()->cart->total,
+                        'currency' => get_woocommerce_currency(),
+                        'transactionId' => ''
+                    )
+                );
+
+                $order_data = '';
+                $cart_contents = WC()->cart->cart_contents;
+                $cart_contents_values = array_values($cart_contents);
+                if (!empty($cart_contents_values)) {
+                    $order_data = $cart_contents_values[0]['data']->id;
+                }
+
+                echo '
+                
+                    <script>
+                    
+                        document.addEventListener(\'DOMContentLoaded\', function() {
+                        
+                                              
+                            jQuery(\'body\').on(\'click\', \'input[name="woocommerce_checkout_place_order"]\', function (e) {
+                                
+                                if(localStorage.getItem("simplepay_payed") == "true"){
+                                    return;
+                                }
+                                
+                                if(localStorage.getItem("simplepay_payed") == null){
+                                    e.preventDefault();
+                                    localStorage.setItem("simplepay_payed","true");
+                                }
+                                
+                                
+                                
+                                clientInformation = {
+                                   email: jQuery(\'input[name="billing_email"]\').val(),
+                                   phone: jQuery(\'input[name="billing_phone"]\').val(),
+                                   description: "' . SimplePayPaymentsLibrary::customCheckOutDescription() . '" + " - Order # " + "' . $order_data . '",
+                                   address: jQuery(\'input[name="billing_address_1"]\').val() + \' \' + jQuery(\'input[name="billing_address_2"]\').val(),
+                                   postal_code: jQuery(\'input[name="billing_postcode"]\').val(),
+                                   city: jQuery(\'input[name="billing_city"]\').val(),
+                                   country: jQuery(\'#billing_country\').val(),
+                                }
+                                
+                                
+                                preventFunction = function(){
+                                    document.checkout.woocommerce_checkout_place_order.click()
+                                    localStorage.removeItem("simplepay_payed");
+                                }
+                                
+                                ' . SimplePayPaymentsLibrary::paymentButton($transaction, 'clientInformation') . '
+                                
+                            });
+                          
+                        }, false);
+                 
+                    </script>
+                ';
+
+            }
+
+
             /**
              * Submit payment
              */
             public function process_payment($order_id)
             {
-                if (!empty($_POST['simplepay_transaction_id'])) {
-                    $verified_transaction = verify_transaction(
-                        $_POST['simplepay_transaction_id'],
-                        WC()->cart->total * 100,
-                        get_woocommerce_currency(),
-                        $this->private_key);
 
-                    if ($verified_transaction['verified']) {
-                        // Update the order meta with the new transaction id
-                        update_post_meta($order_id, 'SimplePay Transaction ID', $verified_transaction['response']['id']);
+                $verify_result = SimplePayPaymentsLibrary::completeTransaction($order_id, $_POST['simplepay_token'], $_POST['simplepay_amount'], $_POST['simplepay_currency'], 'simplepay_callback');
 
-                        $order = wc_get_order($order_id);
+                if ($verify_result['verified']) {
 
-                        // Complete the payment and reduce stock levels
-                        $order->payment_complete();
+                    // Update the order meta with the new transaction id
+                    update_post_meta($verify_result['purchaseId'], 'SimplePay Transaction ID', $verify_result['response']['id']);
+                    $order = wc_get_order($verify_result['purchaseId']);
 
-                        // Remove cart
-                        WC()->cart->empty_cart();
+                    // Complete the payment and reduce stock levels
+                    $order->payment_complete();
 
-                        return array(
-                            'result' => 'success',
-                            'redirect' => $this->get_return_url($order)
-                        );
-                    }
+                    // Remove cart
+                    WC()->cart->empty_cart();
+
+                    $context =  $verify_result['context'];
+
+                    return array(
+                        'result' => 'success',
+                        'redirect' => $this->get_return_url($order)
+                    );
                 }
             }
         }

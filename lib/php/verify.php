@@ -10,6 +10,10 @@ function verify_transaction($token, $amount, $currency, $private_key)
 
     $ch = curl_init();
 
+    set_time_limit(0);
+
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT ,0);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 300);
     curl_setopt($ch, CURLOPT_URL, 'https://checkout.simplepay.ng/v1/payments/verify/');
     curl_setopt($ch, CURLOPT_USERPWD, $private_key . ':');
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -25,11 +29,14 @@ function verify_transaction($token, $amount, $currency, $private_key)
     $verify_count = 1;
     $response = do_curl($ch);
     $verified = valid_response($response);
+
     while (!$verified && $verify_count < 3) {
         $response = do_curl($ch);
         $verified = valid_response($response);
         $verify_count += 1;
     }
+
+    set_time_limit(30);
 
     curl_close($ch);
 

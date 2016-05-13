@@ -95,7 +95,7 @@ function init_simplepay_gateway_class()
                 SimplePayPaymentsLibrary::customCheckOutDescription($admin_settings->simplepay_description);
                 SimplePayPaymentsLibrary::customCheckOutImg($admin_settings->simplepay_custom_image_url);
                 SimplePayPaymentsLibrary::completeTransactionURL($admin_settings->simplepay_button_checkout_url);
-                SimplePayPaymentsLibrary::platform('Wordpress '.$wp_version.' WooCommerce '.$woocommerce->version);
+                SimplePayPaymentsLibrary::platform('Wordpress ' . $wp_version . ' WooCommerce ' . $woocommerce->version);
 
             }
 
@@ -202,6 +202,7 @@ function init_simplepay_gateway_class()
                 echo 'Master Card, Visa and Verve (Processed securely by SimplePay)';
 
                 SimplePayPaymentsLibrary::initializeGateway('checkout', 'preventFunction');
+                echo '<script>localStorage.removeItem("simplepay_payed");</script>';
                 SimplePayPaymentsLibrary::paymentForms(false);
 
                 $transaction = new SimplePayTransaction(
@@ -225,37 +226,67 @@ function init_simplepay_gateway_class()
                     
                         document.addEventListener(\'DOMContentLoaded\', function() {
                         
+                            
                                               
                             jQuery(\'body\').on(\'click\', \'input[name="woocommerce_checkout_place_order"]\', function (e) {
+                              
+                                var localVar = localStorage.getItem("simplepay_payed")
                                 
-                                if(localStorage.getItem("simplepay_payed") == "true"){
-                                    return;
-                                }
-                                
-                                if(localStorage.getItem("simplepay_payed") == null){
+                                if(localVar === null ){
                                     e.preventDefault();
-                                    localStorage.setItem("simplepay_payed","true");
+                                    checkout_page = jQuery(document.checkout);
+
+                                    jQuery.ajax({
+                                        type: \'POST\',
+                                        url: "' . get_site_url() . '/index.php?wc-ajax=checkout",
+                                        data: checkout_page.serializeArray(),
+                                        dataType: \'json\',
+                                        success: function (response) {
+                                                                                                
+                                            if(response.messages == ""){
+                                            
+                                                localStorage.setItem("simplepay_payed","a");
+                                                document.checkout.woocommerce_checkout_place_order.click()
+                                                    
+                                            }
+                                            else{
+                                                checkout_page.prepend(response.messages);
+                                                jQuery(\'html, body\').animate({
+                                                    scrollTop: checkout_page.offset().top - 100
+                                                 }, 1000);
+                                            }
+                                        }
+                                
+                                    });
+                                }
+                              
+                                
+                                if(localVar === "a"){
+                                    e.preventDefault();
+
+                                    clientInformation = {
+                                       email: jQuery(\'input[name="billing_email"]\').val(),
+                                       phone: jQuery(\'input[name="billing_phone"]\').val(),
+                                       description: "' . SimplePayPaymentsLibrary::customCheckOutDescription() . '" + "  Order # " + "' . $order_data . '",
+                                       address: jQuery(\'input[name="billing_address_1"]\').val() + \' \' + jQuery(\'input[name="billing_address_2"]\').val(),
+                                       postal_code: jQuery(\'input[name="billing_postcode"]\').val(),
+                                       city: jQuery(\'input[name="billing_city"]\').val(),
+                                       country: jQuery(\'#billing_country\').val(),
+                                    }
+                                    
+                                    
+                                    preventFunction = function(){
+                                        localStorage.setItem("simplepay_payed","b");
+                                        document.checkout.woocommerce_checkout_place_order.click();
+                                    }
+                                    
+                                    ' . SimplePayPaymentsLibrary::paymentButton($transaction, 'clientInformation') . '
+                                
                                 }
                                 
-                                
-                                
-                                clientInformation = {
-                                   email: jQuery(\'input[name="billing_email"]\').val(),
-                                   phone: jQuery(\'input[name="billing_phone"]\').val(),
-                                   description: "' . SimplePayPaymentsLibrary::customCheckOutDescription() . '" + " - Order # " + "' . $order_data . '",
-                                   address: jQuery(\'input[name="billing_address_1"]\').val() + \' \' + jQuery(\'input[name="billing_address_2"]\').val(),
-                                   postal_code: jQuery(\'input[name="billing_postcode"]\').val(),
-                                   city: jQuery(\'input[name="billing_city"]\').val(),
-                                   country: jQuery(\'#billing_country\').val(),
+                                if(localVar === "b"){
+                                    return true;
                                 }
-                                
-                                
-                                preventFunction = function(){
-                                    document.checkout.woocommerce_checkout_place_order.click()
-                                    localStorage.removeItem("simplepay_payed");
-                                }
-                                
-                                ' . SimplePayPaymentsLibrary::paymentButton($transaction, 'clientInformation') . '
                                 
                             });
                           
@@ -287,13 +318,12 @@ function init_simplepay_gateway_class()
                     // Remove cart
                     WC()->cart->empty_cart();
 
-                    $context =  $verify_result['context'];
-
                     return array(
                         'result' => 'success',
                         'redirect' => $this->get_return_url($order)
                     );
                 }
+
             }
         }
     }

@@ -1,3 +1,6 @@
+## 1.7.4 (May 13, 2026)
+- Update the PHP Verify Library
+
 ## 1.7.3 (May 5, 2016)
 
 - Fix amount in verify payment validation

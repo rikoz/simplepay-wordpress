@@ -140,12 +140,6 @@ function give_simplepay_process_simplepay_payment($purchase_data)
     $settingsDB = SimplePay_DB::get_instance()->load_admin_data();
     $admin_settings = $settingsDB[0];
 
-    if (give_is_test_mode()) {
-        $private_key = $admin_settings->simplepay_test_private_api_key;
-    } else {
-        $private_key = $admin_settings->simplepay_live_private_api_key;
-    }
-
     $purchase_summary = give_get_purchase_summary($purchase_data, false);
 
     // make sure we don't have any left over errors present
@@ -183,12 +177,17 @@ function give_simplepay_process_simplepay_payment($purchase_data)
             $payment = give_insert_payment($payment_data);
 
             // verify transaction
-            $verified_transaction = verify_transaction(
-                $_POST['give_simplepay_token'],
-                $_POST['give_simplepay_amount'],
-                $_POST['give_simplepay_currency'],
-                $private_key);
+            SimplePayPaymentsLibrary::sandboxMode(give_is_test_mode());
+            SimplePayPaymentsLibrary::testKeys( Array(
+                'private' => $admin_settings->simplepay_test_private_api_key
+            ));
 
+            SimplePayPaymentsLibrary::liveKeys( Array(
+                'private' => $admin_settings->simplepay_live_private_api_key
+            ));
+
+            $verified_transaction = SimplePayPaymentsLibrary::completeTransaction('',$_POST['give_simplepay_token'] ,$_POST['give_simplepay_amount'] ,$_POST['give_simplepay_currency'] );
+            
             if ($verified_transaction['verified']) {
                 give_update_payment_status($payment, 'publish');
 

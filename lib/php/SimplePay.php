@@ -226,20 +226,20 @@
 
 
         public static function paymentForms($form=true){
-            $inputsStrings = '
-                    <input type="hidden" id="simplepay_amount" name="simplepay_amount" value=""/>
-                    <input type="hidden" id="simplepay_currency" name="simplepay_currency" value=""/>
-                    <input type="hidden" id="simplepay_order_id" name="simplepay_order_id" value=""/>
-                    <input type="hidden" id="simplepay_token" name="simplepay_token" value=""/>';
+
+            $inputsStrings = '<input type="hidden" id="simplepay_amount" name="simplepay_amount" value=""/>';
+            $inputsStrings .= '<input type="hidden" id="simplepay_currency" name="simplepay_currency" value=""/>';
+            $inputsStrings .= '<input type="hidden" id="simplepay_order_id" name="simplepay_order_id" value=""/>';
+            $inputsStrings .= '<input type="hidden" id="simplepay_token" name="simplepay_token" value=""/>';
 
             if($form){
-                echo '
+                return '
                     <form method="post" action="'.self::completeTransactionURL().'" id="simplepay_checkout" >
                        '.$inputsStrings.'
                     </form>';
             }
             else {
-                echo $inputsStrings;
+                return $inputsStrings;
             }
         }
 
@@ -346,7 +346,7 @@
                         
                         // Submit the payment, in order to complete the transaction. 
                         
-                        '.$preventFunction.'();
+                        '.$preventFunction.'
                         
                         
                     }

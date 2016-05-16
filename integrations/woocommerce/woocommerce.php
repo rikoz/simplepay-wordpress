@@ -201,9 +201,9 @@ function init_simplepay_gateway_class()
 
                 echo 'Master Card, Visa and Verve (Processed securely by SimplePay)';
 
-                SimplePayPaymentsLibrary::initializeGateway('checkout', 'preventFunction');
+                SimplePayPaymentsLibrary::initializeGateway('checkout', 'preventFunction();');
                 echo '<script>localStorage.removeItem("simplepay_payed");</script>';
-                SimplePayPaymentsLibrary::paymentForms(false);
+                echo SimplePayPaymentsLibrary::paymentForms(false);
 
                 $transaction = new SimplePayTransaction(
                     Array(
@@ -242,7 +242,7 @@ function init_simplepay_gateway_class()
                                         data: checkout_page.serializeArray(),
                                         dataType: \'json\',
                                         success: function (response) {
-                                                                                                
+                                                                                                                                        
                                             if(response.messages == ""){
                                             
                                                 localStorage.setItem("simplepay_payed","a");

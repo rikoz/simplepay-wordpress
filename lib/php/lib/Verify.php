@@ -11,6 +11,8 @@
         $data_string = json_encode($data);
         $ch = curl_init();
 
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT ,15);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 30);
         curl_setopt($ch, CURLOPT_URL, 'https://checkout.simplepay.ng/v1/payments/verify/');
         curl_setopt($ch, CURLOPT_USERPWD, $private_key . ':');
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -23,14 +25,17 @@
             'Content-Length: ' . strlen($data_string)
         ));
 
-        $verify_count = 1;
-        $response = doCurl($ch);
-        $verified = validResponse($response);
+        $verify_count = 0;
 
-        while (!$verified && $verify_count < 3) {
+        while ((curl_errno($ch) or $verify_count == 0) and $verify_count < 5) {
             $response = doCurl($ch);
             $verified = validResponse($response);
             $verify_count += 1;
+
+            if(curl_error($ch)){
+                error_log('error: ' . curl_error($ch),0);
+            }
+
         }
 
         curl_close($ch);

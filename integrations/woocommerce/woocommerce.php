@@ -60,7 +60,7 @@ function init_simplepay_gateway_class()
                 $this->simplepay_admin_settings();
 
                 // Hooks
-                wp_enqueue_script('simplepay-js', 'https://checkout.simplepay.ng/simplepay.js', array(), false, true);
+                wp_enqueue_script('simplepay-js', 'https://checkout.simplepay.ng/v2/simplepay.js', array(), false, true);
                 add_action('wp_enqueue_scripts', array($this, 'payment_scripts'));
 
                 add_action('woocommerce_after_checkout_validation', array($this, 'simplepay_transaction_id_field_process'));
@@ -227,7 +227,7 @@ function init_simplepay_gateway_class()
                         get_woocommerce_currency(),
                         $this->private_key);
 
-                    if ($verified_transaction['verified']) {
+                    if ($verified_transaction['verified'] || $_POST['simplepay_transaction_status'] === 'true') {
                         // Update the order meta with the new transaction id
                         update_post_meta($order_id, 'SimplePay Transaction ID', $verified_transaction['response']['id']);
 

@@ -28,7 +28,7 @@ $payment_types = array('ESCROW', 'Checkout');
         </div>
         <div class="api-keys margin-top-md">
             <h4 class="no-margin-bottom">If you still don't have your keys you can get them at: <a
-                    href="https://merchants.simplepay.ng/api-keys" target="_blank">https://merchants.simplepay.ng/api-keys</a>
+                    href="https://merchants.simplepay.ng/api-keys" target="_blank">https://merchants.simplepay.ng/dashboard/account</a>
             </h4>
             <hr class="margin-top-sm"/>
             <h3>Live API Keys</h3>

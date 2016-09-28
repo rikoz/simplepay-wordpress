@@ -2,8 +2,8 @@
 Contributors: simplepayng
 Tags: simplepay, payments, payment gateway, visa, mastercard, verve, givewp, woocommerce, commerce, quick donation, simple donation, wordpress donation, checkout, nigeria
 Requires at least: 3.6
-Tested up to: 4.5
-Stable tag: 1.7.3
+Tested up to: 4.6
+Stable tag: 1.8.0
 License: MIT
 
 SimplePay is the best Online Payment Gateway for the Nigerian market.

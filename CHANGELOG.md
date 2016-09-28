@@ -1,3 +1,7 @@
+## 1.8.0(September 27, 2016)
+
+- Update to SimplePay gateway version 2
+
 ## 1.7.3 (May 5, 2016)
 
 - Fix amount in verify payment validation

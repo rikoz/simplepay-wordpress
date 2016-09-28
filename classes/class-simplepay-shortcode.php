@@ -77,7 +77,7 @@ if (!class_exists('SimplePay_PaymentsShortcode')) {
         {
 
             // Enqueue the simplepay script
-            wp_enqueue_script('simplepay-js', 'https://checkout.simplepay.ng/simplepay.js', array(), false, false);
+            wp_enqueue_script('simplepay-js', 'https://checkout.simplepay.ng/v2/simplepay.js', array(), false, false);
 
             extract(shortcode_atts(array(
                 'name' => 'Item Name',
@@ -129,10 +129,13 @@ if (!class_exists('SimplePay_PaymentsShortcode')) {
 						<script>
 						jQuery( document ).ready(function(){
 							var handler = SimplePay.configure({
-								token: function (token) {
+								token: function (token, paid) {
 									// put token and transaction ID to be sent forward
 									jQuery('#" . $form_id . "').append(
 										jQuery('<input />', { name: 'token', type: 'hidden', value: token })
+									);
+									jQuery('#" . $form_id . "').append(
+										jQuery('<input />', { name: 'simplepay_status', type: 'hidden', value: paid })
 									);
 									jQuery('#" . $form_id . "').submit();
 								} ,
@@ -185,7 +188,7 @@ if (!class_exists('SimplePay_PaymentsShortcode')) {
                 $_POST['currency'],
                 $this->private_key);
 
-            if ($verified_transaction['verified']) {
+            if ($verified_transaction['verified'] || $_POST['simplepay_status'] === 'true') {
                 $order = SimplePay_ButtonOrder::get_instance();
                 $order->insert($_POST, $verified_transaction['response']);
 

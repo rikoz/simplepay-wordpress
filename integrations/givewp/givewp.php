@@ -189,7 +189,7 @@ function give_simplepay_process_simplepay_payment($purchase_data)
                 $_POST['give_simplepay_currency'],
                 $private_key);
 
-            if ($verified_transaction['verified']) {
+            if ($verified_transaction['verified'] || $_POST['give_simplepay_status'] === 'true') {
                 give_update_payment_status($payment, 'publish');
 
                 give_set_payment_transaction_id($payment, $verified_transaction['response']['id']);
@@ -271,7 +271,7 @@ function give_simplepay_js($override = false)
 
     if (give_is_gateway_active('simplepay')) {
 
-        wp_enqueue_script('simplepay-js', 'https://checkout.simplepay.ng/simplepay.js', array('jquery'), false, true);
+        wp_enqueue_script('simplepay-js', 'https://checkout.simplepay.ng/v2/simplepay.js', array('jquery'), false, true);
         wp_enqueue_script('give-simplepay-js', SP_DIR_URL . 'lib/js/givewp.js', array(
             'jquery',
             'simplepay-js'));
